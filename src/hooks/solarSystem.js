@@ -6,11 +6,11 @@ function solarSystem(planetName) {
         const fetchSolarSystem = async (planetName) => {
             try {
                 const API_KEY = import.meta.env.VITE_SOLAR_API_KEY;
-                const isLocalDev = import.meta.env.DEV;
-                const baseUrl = isLocalDev 
-                    ? '/api' 
-                    : 'https://api.le-systeme-solaire.net';
-                const response = await fetch(`${baseUrl}/rest/bodies/${planetName}`, {
+                const targetUrl = `https://api.le-systeme-solaire.net/rest/bodies/${planetName}`;
+                const fetchUrl = isLocalDev 
+                    ? `/api/rest/bodies/${planetName}` 
+                    : `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+                const response = await fetch(fetchUrl, {
                 headers: { 'Authorization': `Bearer ${API_KEY}` }
                 });
                 const result = await response.json();
