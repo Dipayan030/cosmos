@@ -7,7 +7,7 @@ import Sidebar from "./Sidebar"
 export default function Planet(){
     const {id} = useParams();
     return(
-        <div style={{ backgroundImage: `url(${destinationData[id].img})` }} className="bg-black h-screen max-w-screen p-6 sm:p-12 lg:p-28 bg-cover bg-center bg-no-repeat flex flex-col justify-end items-end gap-18 transition-all duration-500 ease-in-out overflow-hidden">
+        <div style={{ backgroundImage: `url(${destinationData[id].img})` }} className="bg-black h-screen max-w-screen p-6 sm:p-12 lg:p-28 bg-cover bg-center bg-no-repeat flex flex-col justify-end items-end gap-8 lg:gap-18 transition-all duration-500 ease-in-out overflow-hidden">
             <Sidebar/>
             <span className="font-space-grotesk flex flex-col gap-5 transition-all duration-700 ease-in-out">
                 <h1 className="text-4xl lg:text-7xl text-white text-right font-medium">{destinationData[id].name}</h1>
