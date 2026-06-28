@@ -15,7 +15,7 @@ export default function Planet(){
                 <p className="text-sm lg:text-lg text-right lg:w-3/6 self-end text-white/70">{destinationData[id].desc}</p>
             </span>
             <span className="flex flex-col gap-12 lg:gap-0 lg:flex lg:flex-row lg:justify-between w-full lg:items-center">
-                <Link className="self-end lg:self-center"><button className="text-sm lg:text-md h-12 w-32 lg:h-16 lg:w-42 border border-white/70 text-white/90 font-space-grotesk hover:bg-white hover:text-black transition-colors transition-discrete ease-in-out duration-200">Book a Trip</button></Link>
+                <Link className="self-end lg:self-center" to={`/book/${id}`}><button className="text-sm lg:text-md h-12 w-32 lg:h-16 lg:w-42 border border-white/70 text-white/90 font-space-grotesk hover:bg-white hover:text-black transition-colors transition-discrete ease-in-out duration-200">Book a Trip</button></Link>
                 <div className="grid grid-cols-2 lg:grid-cols-4 text-white justify-around gap-8 lg:gap-16">
                     <span className="text-center flex flex-col gap-2 lg:gap-3">
                         <h1 className="text-xl lg:text-4xl font-space-mono">{destinationData[id].equaRadius}<span className="text-sm lg:text-lg font-space-grotesk"> KM</span></h1>

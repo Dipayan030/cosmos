@@ -7,6 +7,7 @@ import Layout from './Layout.jsx'
 import Homepage from './components/Homepage.jsx'
 import Destinations from './components/Destinations.jsx'
 import Planet from './components/Planet.jsx'
+import Checkout from './components/Checkout.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -14,6 +15,8 @@ const router = createBrowserRouter(
       <Route path='' element={<Homepage />} />
       <Route path='destinations' element={<Destinations />}/>
       <Route path='destinations/:id' element={<Planet />} />
+      <Route path='book' element={<Checkout />} />
+      <Route path ='book/:id' element={<Checkout />}/>
     </Route>
   )
 )
