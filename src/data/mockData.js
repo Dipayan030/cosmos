@@ -14,6 +14,10 @@ const destinationData = [
         the lunar surface offers an unforgettable retro-futuristic weekend getaway. Walk among historic landing sites, 
         experience low-gravity base jumping, and watch Earthrise from the comfort of a pressurized bio-dome.`,
         img : moon,
+        equaRadius : 1738.1,
+        oritalPeriod : 27.3217,
+        density: 3.34,
+        solarAphelion : 0.4055,
     },
     {
         id: 1,
@@ -22,6 +26,10 @@ const destinationData = [
         desc: `Don't forget your hiking boots. You'll need them to tackle Olympus Mons, the tallest planetary mountain 
         in our solar system. It's three times the height of Mount Everest, and the views are absolutely breathtaking.`,
         img: mars,
+        equaRadius : 3396.19,
+        oritalPeriod : 686.98 ,
+        density: 3.93,
+        solarAphelion : 249.2,
     },
     {
         id: 2,
@@ -30,6 +38,10 @@ const destinationData = [
         desc: `The smallest of the four Galilean moons orbiting Jupiter, Europa is a cryo-lover's dream. With a surface 
         made of solid water ice, it is the ultimate luxury ice-skating and deep-sea exploration destination in the system.`,
         img: europa,
+        equaRadius : 1560.8,
+        oritalPeriod : 3.55118,
+        density: 3.01,
+        solarAphelion : 0,
     },
     {
         id: 3,
@@ -39,6 +51,10 @@ const destinationData = [
         Titan is an explorer's ultimate playground. Put on your thermal wingsuit and coast through the thick, 
         golden nitrogen skies, or charter a submarine cruise to explore the deep methane depths of Kraken Mare.`,
         img: titan,
+        equaRadius : 2574.73,
+        oritalPeriod : 15.95,
+        density: 1.88,
+        solarAphelion : 1.25706,
     }
 ]
 

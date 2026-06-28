@@ -7,14 +7,5 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-  ],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://api.le-systeme-solaire.net',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''), 
-      },
-    },
-  },
+  ]
 })
