@@ -2,9 +2,38 @@ import React from "react";
 import checkoutBanner from '../assets/checkoutBanner.png'
 import { Link, useParams } from "react-router-dom";
 import destinationData from "../data/mockData";
+import { useState } from "react";
 
 function Checkout() {
     const {id} = useParams();
+    const [bookingInfo , setBookingInfo] = useState({
+        fullName : '',
+        email : '',
+        spaceId : '',
+        destination : '',
+        ticketId : 'FH-128409'
+    });
+    const sendCheckoutConfMail = async (e) => {
+        
+        const bookingData = {
+            fullName : bookingInfo.fullName,
+            email : bookingInfo.email,
+            spaceId : bookingInfo.spaceId,
+            destination : bookingInfo.destination,
+            ticketId : bookingInfo.ticketId
+        };
+        try{
+            const response = await fetch('http://localhost:5000/api/checkout' , {
+                method : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body : JSON.stringify(bookingData)
+            });
+        } catch{
+            console.error("API link breakdown:", error);
+        }
+    } 
     return ( 
         <div className="max-w-screen h-auto lg:h-screen lg:px-48 py-20 lg:py-24 bg-black">
             <div className="size-full lg:bg-[#D9D9D9]/10 lg:p-3 lg:rounded-2xl gap-4 flex flex-col lg:flex lg:flex-row">
@@ -15,26 +44,37 @@ function Checkout() {
                     <h1 className="text-xl lg:text-3xl mb-4">SECURE YOUR ORBITAL PASS</h1>
                     <span className="gap-2 flex flex-col">
                         <label htmlFor="" className="text-xs lg:text-sm">Full Legal Name</label>
-                        <input type="text" placeholder="Commander Shepard" className="text-sm lg:text-base h-14 lg:h-16 w-full rounded-md p-6 outline-none bg-transparent border border-[#D9D9D9]/35"/>
+                        <input type="text" placeholder="Commander Shepard" 
+                        required
+                        value={bookingInfo.fullName}
+                        onChange={(e) => setBookingInfo({...bookingInfo,fullName : e.target.value})}
+                        className="text-sm lg:text-base h-14 lg:h-16 w-full rounded-md p-6 outline-none bg-transparent border border-[#D9D9D9]/35"/>
                     </span>
                     <span className="gap-2 flex flex-col">
                         <label htmlFor="" className="text-xs lg:text-sm">Space Passport ID</label>
-                        <input type="text" placeholder="SP-9982X" className="text-sm lg:text-base h-14 lg:h-16 w-full rounded-md p-6 outline-none bg-transparent border border-[#D9D9D9]/35"/>
+                        <input type="text" placeholder="SP-9982X" 
+                        required
+                        value={bookingInfo.spaceId}
+                        onChange={(e) => setBookingInfo({...bookingInfo,spaceId : e.target.value})}
+                        className="text-sm lg:text-base h-14 lg:h-16 w-full rounded-md p-6 outline-none bg-transparent border border-[#D9D9D9]/35"/>
                     </span> 
                     <span className="gap-2 flex flex-col">
                         <label htmlFor="" className="text-xs lg:text-sm">Select Destination</label>
-                        <input type="text" placeholder="MOON" value={destinationData[id].name} className="text-sm lg:text-base h-14 lg:h-16 w-full rounded-md p-6 outline-none bg-transparent border border-[#D9D9D9]/35"/>
+                        <input type="text" placeholder="MOON" value={destinationData[id].name} 
+                        onChange={(e) => setBookingInfo({...bookingInfo,destination : e.target.value})}
+                        className="text-sm lg:text-base h-14 lg:h-16 w-full rounded-md p-6 outline-none bg-transparent border border-[#D9D9D9]/35"/>
                     </span> 
                     <span className="gap-2 flex flex-col">
                         <label htmlFor="" className="text-xs lg:text-sm">Email</label>
-                        <input type="text" placeholder="Email" className="text-sm lg:text-base h-14 lg:h-16 w-full rounded-md p-6 outline-none bg-transparent border border-[#D9D9D9]/35"/>
+                        <input type="text" placeholder="Email" 
+                        onChange={(e) => setBookingInfo({...bookingInfo,email : e.target.value})}
+                        className="text-sm lg:text-base h-14 lg:h-16 w-full rounded-md p-6 outline-none bg-transparent border border-[#D9D9D9]/35"/>
                     </span>
                     <span className="gap-2 flex flex-col text-sm lg:text-base">
                         <p>Departure Station: Cape Canaveral Orbit-1</p>
                         <p>Next launch window: 48 hours</p>
                     </span>
-                    
-                    <Link><button className="lg:h-16 h-14 w-full bg-white text-black text-base lg:text-lg rounded-md">Checkout</button></Link>
+                    <Link><button onClick={sendCheckoutConfMail} className="lg:h-16 h-14 w-full bg-white text-black text-base lg:text-lg rounded-md">Checkout</button></Link>
                 </div>
             </div>
         </div>
