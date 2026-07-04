@@ -11,8 +11,10 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173', // Local Vite development environment
-    'https://cosmos-tqs9.onrender.com/'
-  ]
+    'https://cosmos-tqs9.onrender.com'
+  ],
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
 }));
 app.use(express.json());
 
