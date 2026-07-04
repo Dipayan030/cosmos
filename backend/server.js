@@ -6,7 +6,12 @@ require('dotenv').config
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:5173', // Local Vite development environment
+    'https://cosmos-tqs9.onrender.com/'
+  ]
+}));
 app.use(express.json());
 
 const transporter = nodemailer.createTransport({
