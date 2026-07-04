@@ -23,7 +23,10 @@ function Checkout() {
             ticketId : bookingInfo.ticketId
         };
         try{
-            const response = await fetch('http://localhost:5000/api/checkout' , {
+            const API_BASE_URL = import.meta.env.PROD
+                ? 'https://cosmos-tqs9.onrender.com'
+                : 'http://localhost:5000';
+            const response = await fetch(`${API_BASE_URL}/api/checkout` , {
                 method : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
