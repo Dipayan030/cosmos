@@ -24,7 +24,7 @@ function Checkout() {
         };
         try{
             const API_BASE_URL = import.meta.env.PROD
-                ? 'https://cosmos-tqs9.onrender.com'
+                ? 'https://cosmos-backend-r2sj.onrender.com'
                 : 'http://localhost:5000';
             const response = await fetch(`${API_BASE_URL}/api/checkout` , {
                 method : 'POST',
