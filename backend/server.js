@@ -18,11 +18,17 @@ app.use(cors({
 app.use(express.json());
 
 const transporter = nodemailer.createTransport({
-    service : 'gmail',
+    host: '://gmail.com', // Explicitly declare the Gmail host domain name
+    port: 587,              // Change from 465 to 587 (Crucial for Render!)
+    secure: false,
     auth : {
         user : process.env.EMAIL_USER,
         pass : process.env.EMAIL_PASS
     },
+    tls: {
+    // This tells Node to allow the connection even if Render's network uses unique cloud routing
+      rejectUnauthorized: false 
+    }
     
 })
 app.post('/api/checkout' , async (req,res) => {
