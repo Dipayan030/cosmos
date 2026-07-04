@@ -18,8 +18,8 @@ app.use(cors({
 app.use(express.json());
 
 const transporter = nodemailer.createTransport({
-    host: '://gmail.com', // Explicitly declare the Gmail host domain name
-    port: 587,              // Change from 465 to 587 (Crucial for Render!)
+    service: 'gmail', 
+    port: 587,            
     secure: false,
     auth : {
         user : process.env.EMAIL_USER,
