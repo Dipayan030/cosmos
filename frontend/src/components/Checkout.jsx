@@ -33,7 +33,7 @@ function Checkout() {
                 },
                 body : JSON.stringify(bookingData)
             });
-        } catch{
+        } catch (error){
             console.error("API link breakdown:", error);
         }
     } 
