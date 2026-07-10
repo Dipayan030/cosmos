@@ -34,7 +34,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Home', to: '/' },
     { name: 'Destinations', to: '/destinations' },
-    { name: 'Book a Trip', to: '/book' },
+    // { name: 'Book a Trip', to: '/book' },
   ];
 
   const getLinkClass = ({ isActive }) =>
