@@ -12,9 +12,9 @@ function Sidebar() {
             setScreen(window.innerWidth);
             if (screen >= 1024){
                 setIsVisible(true);
-            } else if(currentScrollY < 50){
+            } else if(currentScrollY < 10){
                 setIsVisible(true);
-            } else if(lastScrollY < currentScrollY && currentScrollY > 10){
+            } else if(lastScrollY < currentScrollY && currentScrollY > 50){
                 setIsVisible(false);
             } else if(lastScrollY > currentScrollY) {
                 setIsVisible(true);

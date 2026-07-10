@@ -18,7 +18,7 @@ const FadeContent = ({
   disappearEase = 'power2.in',
   onComplete,
   onDisappearanceComplete,
-  className = '',
+  // className = 'lg:w-6/7',
   ...props
 }) => {
   const ref = useRef(null);
@@ -83,7 +83,7 @@ const FadeContent = ({
   }, []);
 
   return (
-    <div ref={ref} className={className} {...props}>
+    <div ref={ref} {...props}>
       {children}
     </div>
   );

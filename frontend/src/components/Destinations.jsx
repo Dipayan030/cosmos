@@ -26,15 +26,11 @@ function Destinations (){
                     <h1 className="text-4xl lg:text-5xl mb-16 font-syne font-bold">PICK YOUR DESTINATION</h1>
                 </AnimatedContent>
             </div>
-            <FadeContent blur={true} duration={1000} easing="ease-out" initialOpacity={0}>
-                    {/* <h1 className="text-4xl lg:text-5xl mb-16 font-syne font-bold">PICK YOUR DESTINATION</h1> */}
-                
-                            
+            <FadeContent blur={true} duration={1000} easing="ease-out" initialOpacity={0}>        
             <div className="max-w-screen p-6 sm:p-12 lg:p-28">
                 <div className="size-full border-r border-b border-white/35 grid grid-cols-1 xl:grid-cols-2">
                     {destinationData.map((destination) => (
-                        <div className="h-120 sm:h-130 md:h-160 lg:h-190 xl:h-150 2xl:h-200 border-t border-l border-white/35 p-6 flex flex-col items-center">
-                            
+                        <div className="h-120 sm:h-130 md:h-160 lg:h-190 xl:h-150 2xl:h-200 border-t border-l border-white/35 p-6 flex flex-col items-center"> 
                             <Link to={`/destinations/${destination.id}`} className="h-1/2"><img src={destination.img} alt={destination.name} className="object-cover"/></Link>
                             <div className="h-1/2 flex flex-col gap-6 md:gap-12 lg:gap-18 2xl:gap-0 justify-end lg:py-6 ">
                                 <Link to={`/destinations/${destination.id}`} className="h-1/2"><h1 className="text-7xl xl:text-7xl 2xl:text-8xl font-space-grotesk font-medium">{destination.name}</h1></Link>
