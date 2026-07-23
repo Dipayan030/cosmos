@@ -23,7 +23,6 @@ export default function Navbar() {
       else if (currentScrollY < lastScrollY) {
         setIsVisible(true);
       }
-
       setLastScrollY(currentScrollY);
     };
 
@@ -33,8 +32,10 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Home', to: '/' },
-    { name: 'Destinations', to: '/destinations' },
-    // { name: 'Book a Trip', to: '/book' },
+    { name: 'Destinations', to: 'destinations' },
+    { name: 'Dashboard', to: 'dashboard' },
+    { name: 'SignIn', to: 'signin' },
+    { name: 'Login', to: 'login' },
   ];
 
   const getLinkClass = ({ isActive }) =>
@@ -101,7 +102,7 @@ export default function Navbar() {
       {/* Mobile Menu Panel */}
       <div
         className={`md:hidden absolute top-20 left-0 w-full bg-black/95 border-b border-white/10 transition-all duration-500 overflow-hidden ${
-          isOpen ? 'max-h-65 opacity-100' : 'max-h-0 opacity-0'
+          isOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="flex flex-col space-y-3 px-6 py-4 font-space-grotesk">
