@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+import { User,AtSign,LogOut } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { user,session,signOut } = useAuth();
+  // const { user } = session?.user;
+  
+  console.log(user)
+  console.log(session?.user);
+  console.log(session?.user.user_metadata.avatar_url);
+  
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -23,7 +32,6 @@ export default function Navbar() {
       else if (currentScrollY < lastScrollY) {
         setIsVisible(true);
       }
-
       setLastScrollY(currentScrollY);
     };
 
@@ -33,18 +41,36 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Home', to: '/' },
-    { name: 'Destinations', to: '/destinations' },
-    // { name: 'Book a Trip', to: '/book' },
+    { name: 'DESTINATIONS', to: 'destinations' },
   ];
+
+  {user? 
+    navLinks.push(
+      { name: 'DASHBOARD', to: 'dashboard' },
+    )
+    :
+    navLinks.push(
+      { name: 'SIGNIN', to: 'signin' },
+      { name: 'LOGIN', to: 'login' },
+    )
+  };
+  
+  function handleProfileDropdown() {
+    if(!isProfileOpen){
+      setIsProfileOpen(true);
+    }else {
+      setIsProfileOpen(false);
+    }
+  }
 
   const getLinkClass = ({ isActive }) =>
     `relative py-2 tracking-[0.2em] transition-colors duration-300 ${
       isActive ? 'text-white' : 'text-white/60 hover:text-white'
     }`;
-
+  
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-50 bg-transparent uppercase tracking-widest text-sm font-light text-white transition-transform duration-500 ease-in-out ${
+      className={`fixed top-0 left-0 right-0 z-50 bg-transparent tracking-widest text-sm font-light text-white transition-transform duration-500 ease-in-out ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
@@ -59,7 +85,8 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-12 font-space-grotesk">
+          <span className="md:flex gap-12 font-space-grotesk items-center">
+          <div className='hidden md:flex space-x-12'>
             {navLinks.map((link) => (
               <NavLink key={link.name} to={link.to} className={getLinkClass}>
                 {({ isActive }) => (
@@ -75,9 +102,37 @@ export default function Navbar() {
               </NavLink>
             ))}
           </div>
+          <img 
+          src={session?.user.user_metadata.avatar_url} 
+          onClick={handleProfileDropdown}
+          className={`${user? 'hidden md:block h-6 w-6 rounded-full' : 'hidden'}`}>
+          </img>
+          <div className={`${user? '' : 'hidden' } ${isProfileOpen? 'absolute' : 'hidden'} flex flex-col py-1 w-auto bg-white/8 top-16 right-14 sm:right-20 md:right-8 lg:right-24`}>
+            <span className='flex gap-2 items-center px-3 py-2'>
+              <User size={16} color="#ffffff" strokeWidth={1.25} />
+              <p className='text-[0.7rem] '>{session?.user?.user_metadata?.name}</p>
+            </span>
+            <span className='flex gap-2 items-center px-3 py-2 mb-2'>
+              <AtSign size={16} color="#ffffff" strokeWidth={1.25} />
+              <p className='text-[0.75rem] '>{session?.user?.user_metadata?.email}</p>
+            </span>
+            <span className='px-1 pt-1 border-t border-white/35'>
+              <button onClick={signOut} className='flex gap-2 items-cente w-full px-2 py-2 hover:bg-zinc-800 '>
+                <LogOut size={16} strokeWidth={1.25} />
+                <p className='text-[0.7rem] '>Logout</p>
+              </button>
+            </span>
+            {/* <button  className='w-full py-4 bg-[#FF2A2A]/12 text-[#FF2727]/65 font-space-grotesk font-normal'>Sign-Out</button> */}
+          </div>
+          </span>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-2">
+            <img 
+            src={session?.user.user_metadata.avatar_url} 
+            onClick={handleProfileDropdown}
+            className='h-6 w-6 rounded-full'>
+            </img>
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
@@ -101,7 +156,7 @@ export default function Navbar() {
       {/* Mobile Menu Panel */}
       <div
         className={`md:hidden absolute top-20 left-0 w-full bg-black/95 border-b border-white/10 transition-all duration-500 overflow-hidden ${
-          isOpen ? 'max-h-65 opacity-100' : 'max-h-0 opacity-0'
+          isOpen ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="flex flex-col space-y-3 px-6 py-4 font-space-grotesk">
