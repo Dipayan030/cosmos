@@ -25,6 +25,7 @@ export default function Navbar() {
       else if (currentScrollY > lastScrollY && currentScrollY > 80) {
         setIsVisible(false);
         setIsOpen(false); // Auto-close mobile drawer on scroll down
+        setIsProfileOpen(false);
       } 
       // If scrolling up, reveal it
       else if (currentScrollY < lastScrollY) {
