@@ -125,7 +125,7 @@ export default function Navbar() {
           className={`${user? 'hidden md:block h-6 w-6 rounded-full' : 'hidden'}`}>
           </img>
           {isProfileOpen && (
-          <div ref={dropdownRef} className={`${user? '' : 'hidden' } ${isProfileOpen? 'absolute' : 'hidden'} flex flex-col py-1 w-auto bg-white/8 top-16 right-14 sm:right-20 md:right-8 lg:right-24`}>
+          <div ref={dropdownRef} className={`${user? '' : 'hidden' } ${isProfileOpen? 'absolute' : 'hidden'} flex flex-col py-1 w-auto bg-zinc-800 top-16 right-14 sm:right-20 md:right-8 lg:right-24`}>
             <span className='flex gap-2 items-center px-3 py-2'>
               <User size={16} color="#ffffff" strokeWidth={1.25} />
               <p className='text-[0.7rem] '>{session?.user?.user_metadata?.name}</p>
@@ -135,7 +135,7 @@ export default function Navbar() {
               <p className='text-[0.75rem] '>{session?.user?.user_metadata?.email}</p>
             </span>
             <span className='px-1 pt-1 border-t border-white/35'>
-              <button onClick={signOut} className='flex gap-2 items-cente w-full px-2 py-2 hover:bg-zinc-800 '>
+              <button onClick={signOut} className='flex gap-2 items-cente w-full px-2 py-2 hover:bg-zinc-900 '>
                 <LogOut size={16} strokeWidth={1.25} />
                 <p className='text-[0.7rem] '>Logout</p>
               </button>
