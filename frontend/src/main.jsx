@@ -19,8 +19,9 @@ const router = createBrowserRouter(
       <Route path='' element={<Homepage />} />
       <Route path='destinations' element={<Destinations />}/>
       <Route path='destinations/:id' element={<Planet />} />
-      <Route path='book' element={<Checkout />} />
-      <Route path ='book/:id' element={<Checkout />}/>
+      <Route element={<ProtectedRoute />}>
+        <Route path ='book/:id' element={<Checkout />}/>
+      </Route>
       <Route element={<ProtectedRoute />}>
         <Route path="dashboard" element={<UserDashboard />}/>
       </Route>
