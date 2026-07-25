@@ -5,7 +5,6 @@ import { useOutletContext } from "react-router-dom";
 function UserDashboard() {
     const context = useOutletContext();
     const session = context?.session;
-    console.log(session);
     return ( 
         <div className="bg-black min-h-screen max-w-screen px-6 py-28 sm:px-12 lg:px-28 xl:py-48 flex flex-col gap-8 lg:gap-18 transition-all duration-500 ease-in-out overflow-hidden">
             <h1 className="text-4xl lg:text-5xl mb-16 font-syne font-bold text-white">Your Bookings</h1>
