@@ -12,11 +12,6 @@ export default function Navbar() {
   const mobileTriggerRef = useRef(null);
   const dropdownRef = useRef(null);
   const { user,session,signOut } = useAuth();
-  // const { user } = session?.user;
-  
-  console.log(user)
-  console.log(session?.user);
-  console.log(session?.user.user_metadata.avatar_url);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -155,7 +150,7 @@ export default function Navbar() {
             src={session?.user.user_metadata.avatar_url} 
             ref={mobileTriggerRef}
             onClick={handleProfileDropdown}
-            className='h-6 w-6 rounded-full'>
+            className={`${user? 'h-6 w-6 rounded-full' : 'hidden'}`}>
             </img>
             <button
               onClick={() => setIsOpen(!isOpen)}
