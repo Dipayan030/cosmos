@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { User,AtSign,LogOut } from 'lucide-react';
@@ -8,6 +8,9 @@ export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const desktopTriggerRef = useRef(null);
+  const mobileTriggerRef = useRef(null);
+  const dropdownRef = useRef(null);
   const { user,session,signOut } = useAuth();
   // const { user } = session?.user;
   
@@ -40,7 +43,7 @@ export default function Navbar() {
   }, [lastScrollY]);
 
   const navLinks = [
-    { name: 'Home', to: '/' },
+    { name: 'HOME', to: '/' },
     { name: 'DESTINATIONS', to: 'destinations' },
   ];
 
@@ -62,6 +65,24 @@ export default function Navbar() {
       setIsProfileOpen(false);
     }
   }
+  
+  useEffect(() => {
+    function handleClickOutside(event) {
+      const clickedElement = event.target;
+
+      // Check if the click happened outside the dropdown AND outside both buttons
+      const clickedOutsideDropdown = dropdownRef.current && !dropdownRef.current.contains(clickedElement);
+      const clickedOutsideDesktopBtn = desktopTriggerRef.current && !desktopTriggerRef.current.contains(clickedElement);
+      const clickedOutsideMobileBtn = mobileTriggerRef.current && !mobileTriggerRef.current.contains(clickedElement);
+
+      if (clickedOutsideDropdown && clickedOutsideDesktopBtn && clickedOutsideMobileBtn) {
+        setIsProfileOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const getLinkClass = ({ isActive }) =>
     `relative py-2 tracking-[0.2em] transition-colors duration-300 ${
@@ -104,10 +125,12 @@ export default function Navbar() {
           </div>
           <img 
           src={session?.user.user_metadata.avatar_url} 
+          ref={desktopTriggerRef}
           onClick={handleProfileDropdown}
           className={`${user? 'hidden md:block h-6 w-6 rounded-full' : 'hidden'}`}>
           </img>
-          <div className={`${user? '' : 'hidden' } ${isProfileOpen? 'absolute' : 'hidden'} flex flex-col py-1 w-auto bg-white/8 top-16 right-14 sm:right-20 md:right-8 lg:right-24`}>
+          {isProfileOpen && (
+          <div ref={dropdownRef} className={`${user? '' : 'hidden' } ${isProfileOpen? 'absolute' : 'hidden'} flex flex-col py-1 w-auto bg-white/8 top-16 right-14 sm:right-20 md:right-8 lg:right-24`}>
             <span className='flex gap-2 items-center px-3 py-2'>
               <User size={16} color="#ffffff" strokeWidth={1.25} />
               <p className='text-[0.7rem] '>{session?.user?.user_metadata?.name}</p>
@@ -122,14 +145,15 @@ export default function Navbar() {
                 <p className='text-[0.7rem] '>Logout</p>
               </button>
             </span>
-            {/* <button  className='w-full py-4 bg-[#FF2A2A]/12 text-[#FF2727]/65 font-space-grotesk font-normal'>Sign-Out</button> */}
           </div>
+          )}
           </span>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2">
             <img 
             src={session?.user.user_metadata.avatar_url} 
+            ref={mobileTriggerRef}
             onClick={handleProfileDropdown}
             className='h-6 w-6 rounded-full'>
             </img>
