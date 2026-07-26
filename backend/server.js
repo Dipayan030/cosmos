@@ -1,9 +1,16 @@
+import express, { json } from 'express';
+import cors from 'cors';
+import { BrevoClient } from '@getbrevo/brevo';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config({ path: __dirname + '/.env' });
-}
-const express = require('express');
-const cors = require('cors');
-const { BrevoClient } = require('@getbrevo/brevo');
+  dotenv.config({ path: join(__dirname , '/.env') });
+};
 
 const app = express();
 
@@ -15,7 +22,7 @@ app.use(cors({
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type']
 }));
-app.use(express.json());
+app.use(json());
 
 const client = new BrevoClient({
     apiKey: process.env.BREVO_API_KEY,
