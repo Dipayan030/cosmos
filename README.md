@@ -1,2 +1,2 @@
 ## COSMOS
-Sci-Fi concept website 
+Sci-Fi concept Full-stack website
