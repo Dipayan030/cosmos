@@ -11,7 +11,7 @@ export const usersModel = {
     async findByID(user_id) {
         const query = `
             SELECT * FROM users 
-            WHERE supabase_id = ?;
+            WHERE user_id = ?;
         `
         const [rows] = await db.query(query, [user_id]); 
         return rows || null;
@@ -21,8 +21,8 @@ export const usersModel = {
         try{
             await connection.beginTransaction();
             const query = `
-                INSTER INTO users (supabase_user_id,name,email,created_at,last_sign_in_at) 
-                VALUES(?,?,?,?,?);
+                INSERT INTO users (user_id, name, email, created_at, last_sign_in_at) 
+                VALUES (?, ?, ?, ?, ?);
             `;
             await connection.query(query,[
                 user_data.supabase_id,

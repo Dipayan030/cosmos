@@ -10,10 +10,10 @@ app.use(cors({
         'https://cosmos-tqs9.onrender.com'
     ],
     methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type']
+    allowedHeaders: ['Content-Type', 'Authorization']
 }))
 
-app.use(express.json({limit: "16kb"}))
+app.use(express.json())
 
 // route declaration 
 app.use("/api/v1/users" , userRouter)

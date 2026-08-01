@@ -15,6 +15,7 @@ const supabase = createClient(
 
 export const signUp = async (req,res) => {
     try{
+        console.log(req.body);
         const authHeader = req.headers.authorization;
         if (!authHeader){
             return res.status(401).json({ error: "Missing Token" });
@@ -24,40 +25,38 @@ export const signUp = async (req,res) => {
         if (!user || error) {
             return res.status(401).json({ error: "Invalid user token"});
         };
-        const records = usersModel.findByID(user.id);
-        if (records.length > 0) {
+        const records = await usersModel.findByID(user.id);
+        if (records) {
             return res.status(200).json({
                 isNewUser : false,
-                user : records[0]
+                user : records
             });
-        } else if (records.length === 0) {
-            usersModel.add(
-                user.id,
-                user.user_metadata?.name || user.user_metadata?.full_name,
-                user.email,
-                user.created_at,
-                user.last_sign_in_at
-            );
-
-            await brevoClient.transactionalEmails.sendTransacEmail({
-                htmlContent: `
-                    <h1>Welcome! ${user.user_metadata?.name}</h1>
-                `,
-                sender: {
-                    email: process.env.EMAIL_USER,
-                    name: "COSMOS COMMAND",
+        };
+        await usersModel.add({
+            supabase_id: user.id,
+            name: user.user_metadata?.name || user.user_metadata?.full_name,
+            email: user.email,
+            created_at: user.created_at?user.confirmed_at.slice(0, 19).replace('T', ' ') : null,
+            last_sign_in_at: user.last_sign_in_at?user.last_sign_in_at.slice(0, 19).replace('T', ' ') : null
+        });
+        await brevoClient.transactionalEmails.sendTransacEmail({
+            htmlContent: `
+                <h1>Welcome! ${user.user_metadata?.name}</h1>
+            `,
+            sender: {
+                email: process.env.EMAIL_USER,
+                name: "COSMOS COMMAND",
+            },
+            subject: "Hello from COSMOS",
+            to: [
+                {
+                    email: user.email,
+                    name: user.user_metadata?.name || user.user_metadata.full_name,
                 },
-                subject: "Hello from COSMOS",
-                to: [
-                    {
-                        email: user.email,
-                        name: user.user_metadata?.name || user.user_metadata.full_name,
-                    },
-                ],
-            })
-        }
+            ],
+        });
 
     } catch (err) {
-
+        console.error("Error syncing users to backend", err);
     }
 };
