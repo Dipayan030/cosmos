@@ -70,10 +70,30 @@ function AuthProvider({ children }) {
             {children}
         </AuthContext.Provider>
     );
-}
+};
 
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
 export default AuthProvider;
+
+async function syncUserWithBackend() {
+    const { data: { session } } = await supabase.auth.getSession();
+    const API_BASE_URL = import.meta.env.PROD
+        ? 'https://cosmos-backend-r2sj.onrender.com'
+        : 'http://localhost:5000';
+    if (session) {
+        try{
+            const response = await fetch(`${API_BASE_URL}/api/v1/users/signup` , {
+                method : "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`,
+                },
+            });
+        } catch(err) {
+            console.error("user sync with backend failed:", err);
+        }
+    };
+};
