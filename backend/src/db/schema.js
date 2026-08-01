@@ -3,7 +3,7 @@ import { db } from "./index.js";
 const createTablesSQL = `
 -- 1. USERS TABLE 
 CREATE TABLE IF NOT EXISTS users (
-    supabase_user_id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     created_at TIMESTAMP,
