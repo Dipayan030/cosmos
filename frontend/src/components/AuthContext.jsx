@@ -9,9 +9,7 @@ function AuthProvider({ children }) {
     const [loading , setLoading] = useState(true);
     
     async function syncUserWithBackend(currentSession) {
-        // const { data: { session } } = await supabase.auth.getSession();
         if (!currentSession) return;
-        console.log(currentSession)
         const API_BASE_URL = import.meta.env.PROD
             ? 'https://cosmos-backend-r2sj.onrender.com'
             : 'http://localhost:8000';
@@ -20,7 +18,7 @@ function AuthProvider({ children }) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${currentSession.access_token}`, // Pass Supabase JWT
+                    'Authorization': `Bearer ${currentSession.access_token}`, 
                 },
             });
 
@@ -29,7 +27,7 @@ function AuthProvider({ children }) {
             }
 
             const data = await response.json();
-            console.log('✅ Synced with Aiven Backend:', data);
+            console.log('✅ Synced with Aiven Backend');
         } catch (error) {
             console.error('❌ Error syncing user with backend:', error);
         }
