@@ -21,15 +21,16 @@ export const usersModel = {
         try{
             await connection.beginTransaction();
             const query = `
-                INSERT INTO users (user_id, name, email, created_at, last_sign_in_at) 
-                VALUES (?, ?, ?, ?, ?);
+                INSERT INTO users (user_id, name, email, created_at, last_sign_in_at, role) 
+                VALUES (?, ?, ?, ?, ?, ?);
             `;
             await connection.query(query,[
                 user_data.supabase_id,
                 user_data.name,
                 user_data.email,
                 user_data.created_at,
-                user_data.last_sign_in_at
+                user_data.last_sign_in_at,
+                user_data.role
             ]);
             await connection.commit();
 
