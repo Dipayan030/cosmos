@@ -11,10 +11,12 @@ import Checkout from './components/Checkout.jsx'
 import UserDashboard from './components/UserDashboard.jsx'
 import Auth from './components/Auth.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
-import AuthProvider from './components/AuthContext.jsx'
 import AdminDashboard from './components/AdminDashboard.jsx'
 import AdminLayout from './layouts/AdminLayout.jsx'
 import AdminRoute from './components/AdminRoute.jsx'
+import AdminLogin from './components/AdminLogin.jsx'
+import { AdminAuthProvider } from './components/AdminAuthContext.jsx'
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,8 +32,9 @@ const router = createBrowserRouter(
         <Route path='signin' element={<Auth option='Sign-In' />}/>
         <Route path='login' element={<Auth option='Login' />}/>
       </Route>
+      <Route path='admin-login' element={<AdminLogin />}/>
       <Route path='/admin/' element={<AdminLayout/>}>
-        <Route path='admin-login' element={<Auth option='Login'/>}/>
+        <Route path='auth/context' element={<AdminAuthProvider />} />
         <Route element={<AdminRoute />}>
           <Route path='dashboard' element={<AdminDashboard />} />
           <Route path='planets' element={<AdminDashboard />} />
@@ -47,8 +50,6 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthProvider>
       <RouterProvider router={router}/>
-    </AuthProvider>
   </React.StrictMode>
 )
