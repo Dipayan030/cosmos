@@ -8,9 +8,9 @@ function ProtectedRoute() {
     const {session , loading} = useAuth();
     if (loading) {
         return (
-        <div className="flex items-center justify-center min-h-screen text-white text-xl">
-            Loading session...
-        </div>
+            <div className="flex items-center justify-center min-h-screen text-white text-xl">
+                Loading session...
+            </div>
         );
     }
     if (!session) {
