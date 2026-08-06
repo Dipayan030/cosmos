@@ -21,7 +21,13 @@ export function AdminAuthProvider ({ children }) {
             const API_BASE_URL = import.meta.env.PROD
                 ? 'https://cosmos-backend-r2sj.onrender.com'
                 : 'http://localhost:8000';
-            const response = await fetch(`${API_BASE_URL}/api/v1/admin/login`)
+            const response = await fetch(`${API_BASE_URL}/api/v1/admin/login`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${session.access_token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
             if (response.ok){
                 const data = await response.json();
                 setRole(data.role);
@@ -35,27 +41,48 @@ export function AdminAuthProvider ({ children }) {
         }
     };
 
-    useEffect (() => {
-        supabase.auth.getSession().then(({data : {session}}) => {
-            setUser(session?.user ?? null);
-            if(session){
-                getAdminProfile(session);
-            };
-        }).catch(() => {
-            setLoading(false);
-        }); 
+    useEffect(() => {
+        let isMounted = true;
+        const initAuth = async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (session) {
+                    setUser(session.user);
+                    await getAdminProfile(session);
+                } else {
+                    setUser(null);
+                    setRole(null);
+                    setLoading(false);
+                }
+            } catch (err) {
+                console.error("Auth init error:", err);
+                if (isMounted) setLoading(false);
+            }
+        };
 
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        initAuth();
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
             setUser(session?.user ?? null);
-            if(_event === 'SIGNED_IN' && session) {
-                getAdminProfile(session);
-                navigate('/admin/dashboard',{ replace: true });
-            };
-            setLoading(false);
+            if (session) {
+                if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+                    await getAdminProfile(session);
+                    if (event === 'SIGNED_IN' && role==='admin') {
+                        navigate('/admin/dashboard', { replace: true });
+                    }
+                }
+            } else {
+                setRole(null);
+                setLoading(false);
+            }
         });
 
-        return () => subscription?.unsubscribe();
-    }, []);
+        return () => {
+            isMounted = false;
+            subscription?.unsubscribe();
+        };
+        }, [navigate]);
 
     return (
         <AdminAuthContext.Provider value={{user,role,loading}}>
