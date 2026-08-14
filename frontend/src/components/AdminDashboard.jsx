@@ -1,30 +1,31 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { EllipsisVertical, Search, Download, SlidersHorizontal, WatchIcon } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 
 function AdminDashboard({ table }) {
     const {user,role} = useOutletContext();
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
+
     const fetchData = async () => {
         const API_BASE_URL = import.meta.env.PROD
             ? 'https://cosmos-backend-r2sj.onrender.com'
             : 'http://localhost:8000';
         try {
-            const response = await fetch(`${API_BASE_URL}/api/v1/${table}`);
+            const response = await fetch(`${API_BASE_URL}/api/v1/admin/${table}`,{
+                method: 'POST',
+            });
             if (response.ok){
                 const userData = await response.json();
-                setData(userData.rows);
+                setData(userData.data);
+                console.log(userData.data);
             };
         } catch(err) {
             console.error("Error fetching data from backend:");
         }
-    }
-    const mockUserData = [
-        {email: 'dipayank2007@gmail.com', name:'Dipayan Karmakar', created_at:'12-05-2026 17:0', last_sign_in_at: '12-05-2026 17:0'},
-        {email: 'dipayank007@gmail.com', name:'Dipayan Karmakar', created_at:'12-05-2026 17:0', last_sign_in_at: '12-05-2026 17:0'},
-        {email: 'dipayank2007@gmail.com', name:'Dipayan Karmakar', created_at:'12-05-2026 17:0', last_sign_in_at: '12-05-2026 17:0'},
-        {email: 'dipayank007@gmail.com', name:'Dipayan Karmakar', created_at:'12-05-2026 17:0', last_sign_in_at: '12-05-2026 17:0'}
-    ]
+    };
+
+    fetchData();
+    
     return (  
         <div className="bg-black min-h-screen w-full px-6 py-28 sm:px-12 lg:px-28 xl:py-32 flex flex-col gap-8 lg:gap-4 transition-all duration-500 ease-in-out overflow-hidden">
             <h1 className="text-4xl lg:text-5xl mb-16 font-syne font-bold text-white">Admin Panel</h1>

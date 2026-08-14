@@ -1,12 +1,13 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
-import { LayoutDashboard, Orbit, Earth, BookOpen, Rocket, Megaphone } from "lucide-react";
+import { LayoutDashboard, Orbit, Earth, BookOpen, Rocket, Megaphone, User } from "lucide-react";
 import { useAdminAuth } from "./AdminAuthContext";
 
 function AdminSidebar() {
     const { user, role } = useAdminAuth();
     const sidebarLinks = [
         { name: 'Dashboard', to: '/admin/dashboard', icon: <LayoutDashboard size={20} strokeWidth={1.25} /> },
+        { name: 'Users', to: '/admin/users', icon: <User size={20} strokeWidth={1.25} /> },
         { name: 'Planets', to: '/admin/planets', icon: <Earth size={20} strokeWidth={1.25} /> },
         { name: 'Bookings', to: '/admin/bookings', icon: <BookOpen size={20} strokeWidth={1.25} /> },
         { name: 'Flights', to: '/admin/flights', icon: <Rocket size={20} strokeWidth={1.25} /> },
