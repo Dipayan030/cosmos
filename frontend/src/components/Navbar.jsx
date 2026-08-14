@@ -119,12 +119,14 @@ export default function Navbar() {
               </NavLink>
             ))}
           </div>
-          <img 
-          src={session?.user.user_metadata.avatar_url} 
-          ref={desktopTriggerRef}
-          onClick={handleProfileDropdown}
-          className={`${user? 'hidden md:block h-6 w-6 rounded-full' : 'hidden'}`}>
-          </img>
+          <Link>
+            <img 
+            src={session?.user.user_metadata.avatar_url} 
+            ref={desktopTriggerRef}
+            onClick={handleProfileDropdown}
+            className={`${user? 'hidden md:block h-6 w-6 rounded-full' : 'hidden'}`}>
+            </img>
+          </Link>
           {isProfileOpen && (
           <div ref={dropdownRef} className={`${user? '' : 'hidden' } ${isProfileOpen? 'absolute' : 'hidden'} flex flex-col py-1 w-auto bg-zinc-800 top-16 right-14 sm:right-20 md:right-8 lg:right-24`}>
             <span className='flex gap-2 items-center px-3 py-2'>
@@ -147,12 +149,14 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2">
-            <img 
-            src={session?.user.user_metadata.avatar_url} 
-            ref={mobileTriggerRef}
-            onClick={handleProfileDropdown}
-            className={`${user? 'h-6 w-6 rounded-full' : 'hidden'}`}>
-            </img>
+            <Link>
+              <img 
+              src={session?.user.user_metadata.avatar_url} 
+              ref={mobileTriggerRef}
+              onClick={handleProfileDropdown}
+              className={`${user? 'h-6 w-6 rounded-full' : 'hidden'}`}>
+              </img>
+            </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"

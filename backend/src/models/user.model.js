@@ -3,7 +3,7 @@ import { db } from "../db/index.js";
 export const usersModel = {
     async find() {
         const query = `
-            SELECT * FROM users;
+            SELECT email,name,created_at,last_sign_in_at FROM users WHERE role!='admin';
         `;
         const [rows] = await db.query(query);
         return rows;

@@ -22,7 +22,7 @@ export function AdminAuthProvider ({ children }) {
                 ? 'https://cosmos-backend-r2sj.onrender.com'
                 : 'http://localhost:8000';
             const response = await fetch(`${API_BASE_URL}/api/v1/admin/login`, {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${session.access_token}`,
                     'Content-Type': 'application/json'

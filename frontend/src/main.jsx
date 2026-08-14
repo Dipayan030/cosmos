@@ -37,8 +37,9 @@ const router = createBrowserRouter(
         <Route path='auth/context' element={<AdminAuthProvider />} />
         <Route element={<AdminRoute />}>
           <Route path='dashboard' element={<AdminDashboard />} />
-          <Route path='planets' element={<AdminDashboard />} />
-          <Route path='bookings' element={<AdminDashboard />} />
+          <Route path='users' element={<AdminDashboard table='users'/>} />
+          <Route path='planets' element={<AdminDashboard table='planets'/>} />
+          <Route path='bookings' element={<AdminDashboard table='booking'/>} />
           <Route path='flights' element={<AdminDashboard />} />
           <Route path='marketing' element={<AdminDashboard />} />
         </Route>
