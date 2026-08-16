@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { adminLogin, getUsers, addPlanets } from "../controllers/admin.controller.js";
 import { verifyToken } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { addPlanets, getPlanets } from "../controllers/planet.controller.js";
+
 
 const router = Router();
 
-router.route("/login").post(verifyToken, adminLogin)
+router.route("/show").post(getPlanets)
+router.route("/add").post(addPlanets)
 
 export default router
