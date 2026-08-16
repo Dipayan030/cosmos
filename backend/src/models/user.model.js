@@ -1,7 +1,7 @@
 import { db } from "../db/index.js";
 
 export const usersModel = {
-    async find() {
+    async findAll() {
         const query = `
             SELECT email,name,created_at,last_sign_in_at FROM users WHERE role!='admin';
         `;
