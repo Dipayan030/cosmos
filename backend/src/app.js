@@ -2,8 +2,6 @@ import express from 'express';
 import cors from 'cors'; 
 import userRouter from './routes/user.route.js';
 import adminRouter from './routes/admin.route.js';
-import planetRouter from './routes/planet.route.js';
-import bookingRouter from './routes/booking.route.js'
 
 const app = express();
 
@@ -21,7 +19,5 @@ app.use(express.json());
 // route declaration 
 app.use("/api/v1/users" , userRouter);
 app.use("/api/v1/admin" , adminRouter);
-app.use("/api/v1/planets", planetRouter);
-app.use("/api/v1/bookings", planetRouter);
 
 export { app }
