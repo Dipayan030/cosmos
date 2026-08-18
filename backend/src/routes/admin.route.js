@@ -1,17 +1,22 @@
 import { Router } from "express";
-import { adminLogin, getUsers } from "../controllers/admin.controller.js";
-import { verifyToken } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { adminAuth } from "../middlewares/adminAuth.middleware.js";
+import { adminLogin } from "../controllers/admin.controller.js";
 import { getPlanets, addPlanets } from "../controllers/planet.controller.js";
 import { getBookings } from "../controllers/booking.controller.js";
+import { getUsers } from "../controllers/user.controller.js";
 
 const router = Router();
 
-router.route("/login").post(verifyToken, adminLogin)
+router.use(adminAuth)
+
+router.route("/login").post(adminLogin)
+
+router.route("/users/show").post(getUsers)
 
 router.route("/planets/show").post(getPlanets)
-router.route("planet/add").get(addPlanets)
+router.route("/planets/add").get(addPlanets)
 
-router.route("bookings/show").post(getBookings)
+router.route("/bookings/show").post(getBookings)
 
 export default router
