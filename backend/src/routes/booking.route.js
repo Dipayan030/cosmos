@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { signUp } from "../controllers/user.controller.js";
-import { verifyToken } from "../middlewares/auth.middleware.js";
-import { getBookings } from "../controllers/booking.controller.js";
+import { addBooking, cancelBooking, showBookings } from "../controllers/booking.controller.js";
+import { userAuth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.route("/show").post(getBookings);
+router.use(userAuth)
+
+router.route("/book/:id").get(addBooking)
+router.route("/show").post(showBookings)
+router.route("/cancel/:id").post(cancelBooking)
 
 export default router

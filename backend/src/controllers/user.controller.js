@@ -1,6 +1,7 @@
 import { usersModel } from "../models/user.model.js"
 import { sendEmail } from "../utils/brevo.js";
 import { json } from "express";
+import { generateId } from "../utils/idGenerator.js";
 
 export const signUp = async (req,res) => {
     try{
@@ -21,7 +22,8 @@ export const signUp = async (req,res) => {
             email: user.email,
             created_at: user.created_at?user.confirmed_at.slice(0, 19).replace('T', ' ') : null,
             last_sign_in_at: user.last_sign_in_at?user.last_sign_in_at.slice(0, 19).replace('T', ' ') : null,
-            role: 'user'
+            role: 'user',
+            space_id: generateId('SP')
         });
         await sendEmail(
             `<h1>Welcome! ${user.user_metadata?.name}</h1>`,
