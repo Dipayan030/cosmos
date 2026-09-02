@@ -41,7 +41,7 @@ export const adminAuth = async (req, res, next) => {
         const { supabaseUser, errorStatus, message } = await verifyToken(req, res);
         if (errorStatus) return res.status(errorStatus).json({ message });
         const dbUser = await usersModel.findByID(supabaseUser.id);
-        if(!dbUser || dbUser[0]) return res.status(404).json({ message: "User not found" });
+        if(!dbUser || dbUser[0]) return res.status(404).json({ message: "User not found helklo" });
         if (dbUser[0].role !== 'admin'){
             return res.status(403).json({ message: "Access denied" });
         };

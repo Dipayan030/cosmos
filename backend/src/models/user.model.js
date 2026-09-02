@@ -3,7 +3,7 @@ import { db } from "../db/index.js";
 export const usersModel = {
     async findAll() {
         const query = `
-            SELECT email,name,created_at,last_sign_in_at FROM users WHERE role!='admin';
+            SELECT space_id,email,name,created_at,last_sign_in_at FROM users WHERE role!='admin';
         `;
         const [rows] = await db.query(query);
         return rows;
@@ -21,8 +21,8 @@ export const usersModel = {
         try{
             await connection.beginTransaction();
             const query = `
-                INSERT INTO users (user_id, name, email, created_at, last_sign_in_at, role) 
-                VALUES (?, ?, ?, ?, ?, ?);
+                INSERT INTO users (user_id, name, email, created_at, last_sign_in_at, role, space_id) 
+                VALUES (?, ?, ?, ?, ?, ?, ?);
             `;
             await connection.query(query,[
                 user_data.supabase_id,
@@ -30,7 +30,8 @@ export const usersModel = {
                 user_data.email,
                 user_data.created_at,
                 user_data.last_sign_in_at,
-                user_data.role
+                user_data.role,
+                user_data.space_id
             ]);
             await connection.commit();
 

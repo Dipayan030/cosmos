@@ -1,7 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
 
-dotenv.config();
+// dotenv.config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -29,5 +29,15 @@ export const uploadToCloudinary = async (localFilePath) => {
     }
     console.error("Cloudinary upload failed:", error.message);
     return null;
+  }
+};
+
+// Delete old asset from Cloudinary using public_id
+export const deleteFromCloudinary = async (publicId) => {
+  try {
+    if (!publicId) return;
+    await cloudinary.uploader.destroy(publicId);
+  } catch (error) {
+    console.error('Error deleting from Cloudinary:', error);
   }
 };
