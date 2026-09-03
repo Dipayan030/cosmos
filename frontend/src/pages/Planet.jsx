@@ -2,9 +2,9 @@ import React from "react"
 import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 import destinationData from "../data/mockData"
-import Sidebar from "./Sidebar"
-import CountUp from "./react-bits/CountUp"
-import FadeContent from "./react-bits/FadeContent"
+import Sidebar from "../components/Sidebar"
+import CountUp from "../components/react-bits/CountUp"
+import FadeContent from "../components/react-bits/FadeContent"
 
 export default function Planet(){
     const {id} = useParams();

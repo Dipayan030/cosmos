@@ -1,5 +1,5 @@
 import React from "react";
-import { supabase } from "./SupabaseClient";
+import { supabase } from "../hooks/SupabaseClient";
 import { Link } from "react-router-dom";
 import googleLogo from '../assets/Google.png'
 
