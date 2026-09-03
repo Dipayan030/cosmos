@@ -1,7 +1,7 @@
 import React , { useEffect , useState} from "react";
-import { supabase } from "./SupabaseClient";
+import { supabase } from "../hooks/SupabaseClient";
 import { Navigate , Outlet } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 
 function ProtectedRoute() {
