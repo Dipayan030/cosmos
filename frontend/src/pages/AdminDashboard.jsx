@@ -1,6 +1,9 @@
-import React, { use, useEffect, useState } from "react";
-import { EllipsisVertical, Search, Download, SlidersHorizontal, WatchIcon } from "lucide-react";
+import React, { useState } from "react";
+import { EllipsisVertical} from "lucide-react";
 import { useOutletContext } from "react-router-dom";
+import AdminSearch from "../components/AdminSearch";
+import AdminAdd from "../components/AdminAdd";
+import AdminExport from "../components/AdminExport";
 
 function AdminDashboard({ table }) {
     const {user,role,userSession} = useOutletContext();
@@ -33,13 +36,10 @@ function AdminDashboard({ table }) {
         <div className="bg-black min-h-screen w-full px-6 py-28 sm:px-12 lg:px-28 xl:py-32 flex flex-col gap-8 lg:gap-4 transition-all duration-500 ease-in-out overflow-hidden">
             <h1 className="text-4xl lg:text-5xl mb-16 font-syne font-bold text-white">Admin Panel</h1>
             <div className="flex w-full h-14 items-center justify-between">
+                <AdminSearch />
                 <span className="flex gap-3 items-center">
-                    <input type="text" placeholder="search" className="text-white/35 outline-none border-none" />
-                </span>
-                <span className="flex gap-3 items-center">
-                    <button className="h-12 px-6 border border-white/35 text-sm text-white/70 flex gap-2 items-center"><Download size={16} strokeWidth={1.75} />Export</button>
-                    <button className="h-12 px-6 text-sm text-black bg-white">+ Add</button>
-                    <SlidersHorizontal size={30} strokeWidth={1.2} className="text-white/70" />
+                    <AdminExport />
+                    <AdminAdd />
                 </span>
             </div>
             <div className="w-full">
