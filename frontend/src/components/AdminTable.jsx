@@ -1,9 +1,14 @@
 import { EllipsisVertical } from "lucide-react";
 
 function AdminTable({ data, cols, headerArr, idName }) {
+    const colsClass = {
+        '5': 'grid-cols-5',
+        '7': 'grid-cols-7',
+        '8': 'grid-cols-8'
+    };
     return (  
         <div className="w-full">
-            <div className={`w-full bg-zinc-950 grid grid-cols-${cols} pl-14`}>
+            <div className={`w-full bg-zinc-950 grid ${colsClass[cols]} pl-14`}>
                 {headerArr.map((colName)=>(
                     <h1 className="h-14 w-auto text-white/70 text-sm flex justify-center items-center">{colName}</h1>
                 ))}
