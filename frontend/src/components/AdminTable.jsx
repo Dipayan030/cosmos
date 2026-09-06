@@ -20,7 +20,7 @@ function AdminTable({ data, cols, headerArr, idName }) {
                         <span key={id} className="h-14 w-14 bg-white/8 border-b border-white/35 text-white/35 flex justify-center items-center">
                             <EllipsisVertical size={26} strokeWidth={1.25} />
                         </span>
-                        <div className={`w-full bg-white/8 grid grid-cols-${cols}`}>
+                        <div className={`w-full bg-white/8 grid ${colsClass[cols]}`}>
                         {Object.values(record).map((value)=>(
                             <h1 className="h-14 w-auto text-white/70 text-sm flex justify-center items-center border-b border-white/30">{value}</h1>
                         ))}
