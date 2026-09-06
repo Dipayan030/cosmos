@@ -16,6 +16,9 @@ import AdminLayout from './layouts/AdminLayout.jsx'
 import AdminRoute from './components/AdminRoute.jsx'
 import AdminLogin from './components/AdminLogin.jsx'
 import { AdminAuthProvider } from './contexts/AdminAuthContext.jsx'
+import AdminUsers from './pages/AdminUsers.jsx'
+import AdminPlanets from './pages/AdminPlanets.jsx'
+import AdminBookings from './pages/AdminBookings.jsx'
 
 
 const router = createBrowserRouter(
@@ -37,9 +40,9 @@ const router = createBrowserRouter(
         <Route path='auth/context' element={<AdminAuthProvider />} />
         <Route element={<AdminRoute />}>
           <Route path='dashboard' element={<AdminDashboard />} />
-          <Route path='users' element={<AdminDashboard table='users/show'/>} />
-          <Route path='planets' element={<AdminDashboard table='planets'/>} />
-          <Route path='bookings' element={<AdminDashboard table='booking'/>} />
+          <Route path='users' element={<AdminUsers />} />
+          <Route path='planets' element={<AdminPlanets />} />
+          <Route path='bookings' element={<AdminBookings />} />
           <Route path='flights' element={<AdminDashboard />} />
           <Route path='marketing' element={<AdminDashboard />} />
         </Route>
