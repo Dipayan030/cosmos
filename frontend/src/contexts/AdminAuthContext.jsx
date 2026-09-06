@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, } from "react";
-import { supabase } from "./SupabaseClient";
+import { supabase } from "../hooks/SupabaseClient";
 import { useNavigate } from "react-router-dom";
 
 const AdminAuthContext = createContext({});
@@ -8,12 +8,14 @@ export function AdminAuthProvider ({ children }) {
     const navigate = useNavigate();
     const [user , setUser] = useState(null);
     const [role , setRole] = useState(null);
+    const [userSession, setUserSession] = useState(null);
     const [loading , setLoading] = useState(true);
 
     async function getAdminProfile(session) {
         if(!session) {
             setUser(null);
             setRole(null);
+            setUserSession(null);
             setLoading(false);
             return;
         };
@@ -49,11 +51,13 @@ export function AdminAuthProvider ({ children }) {
                 
                 if (session) {
                     setUser(session.user);
+                    setUserSession(session);
                     await getAdminProfile(session);
                 } else {
                     setUser(null);
                     setRole(null);
                     setLoading(false);
+                    setUserSession(null);
                 }
             } catch (err) {
                 console.error("Auth init error:", err);
@@ -75,6 +79,7 @@ export function AdminAuthProvider ({ children }) {
             } else {
                 setRole(null);
                 setLoading(false);
+                setUserSession(null);
             }
         });
 
@@ -85,7 +90,7 @@ export function AdminAuthProvider ({ children }) {
         }, [navigate]);
 
     return (
-        <AdminAuthContext.Provider value={{user,role,loading}}>
+        <AdminAuthContext.Provider value={{user,role,loading,userSession}}>
             {children}
         </AdminAuthContext.Provider>
     );

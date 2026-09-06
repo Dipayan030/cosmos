@@ -1,7 +1,7 @@
 import React from "react";
 import AdminSidebar from "../components/AdminSidebar";
 import { Outlet, ScrollRestoration } from "react-router-dom";
-import { AdminAuthProvider } from "../components/AdminAuthContext";
+import { AdminAuthProvider } from "../contexts/AdminAuthContext";
 
 function AdminLayout() {
     return (  

@@ -4,18 +4,21 @@ import './index.css'
 import App from './App.jsx'
 import { Route , RouterProvider , Routes, createBrowserRouter , createRoutesFromElements } from 'react-router-dom'
 import Layout from './layouts/Layout.jsx'
-import Homepage from './components/Homepage.jsx'
-import Destinations from './components/Destinations.jsx'
-import Planet from './components/Planet.jsx'
-import Checkout from './components/Checkout.jsx'
-import UserDashboard from './components/UserDashboard.jsx'
-import Auth from './components/Auth.jsx'
+import Homepage from './pages/Homepage.jsx'
+import Destinations from './pages/Destinations.jsx'
+import Planet from './pages/Planet.jsx'
+import Checkout from './pages/Checkout.jsx'
+import UserDashboard from './pages/UserDashboard.jsx'
+import Auth from './pages/Auth.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
-import AdminDashboard from './components/AdminDashboard.jsx'
+import AdminDashboard from './pages/AdminDashboard.jsx'
 import AdminLayout from './layouts/AdminLayout.jsx'
 import AdminRoute from './components/AdminRoute.jsx'
 import AdminLogin from './components/AdminLogin.jsx'
-import { AdminAuthProvider } from './components/AdminAuthContext.jsx'
+import { AdminAuthProvider } from './contexts/AdminAuthContext.jsx'
+import AdminUsers from './pages/AdminUsers.jsx'
+import AdminPlanets from './pages/AdminPlanets.jsx'
+import AdminBookings from './pages/AdminBookings.jsx'
 
 
 const router = createBrowserRouter(
@@ -37,9 +40,9 @@ const router = createBrowserRouter(
         <Route path='auth/context' element={<AdminAuthProvider />} />
         <Route element={<AdminRoute />}>
           <Route path='dashboard' element={<AdminDashboard />} />
-          <Route path='users' element={<AdminDashboard table='users'/>} />
-          <Route path='planets' element={<AdminDashboard table='planets'/>} />
-          <Route path='bookings' element={<AdminDashboard table='booking'/>} />
+          <Route path='users' element={<AdminUsers />} />
+          <Route path='planets' element={<AdminPlanets />} />
+          <Route path='bookings' element={<AdminBookings />} />
           <Route path='flights' element={<AdminDashboard />} />
           <Route path='marketing' element={<AdminDashboard />} />
         </Route>

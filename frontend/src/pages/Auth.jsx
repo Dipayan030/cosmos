@@ -2,8 +2,8 @@ import React, { useState , useEffect } from "react";
 import { Link } from "react-router-dom";
 import authBanner from '../assets/authBanner.png'
 import googleLogo from '../assets/Google.png'
-import { useAuth } from "./AuthContext";
-import { supabase } from "./SupabaseClient";
+import { useAuth } from "../contexts/AuthContext";
+import { supabase } from "../hooks/SupabaseClient";
 
 
 function Auth({option}) {  
