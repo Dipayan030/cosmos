@@ -1,8 +1,8 @@
 import React from "react";
 
-function AdminAdd() {
+function AdminAdd({ onClickBtn }) {
     return (  
-        <button className="h-12 px-6 text-sm text-black bg-white">+ Add</button>
+        <button onClick={onClickBtn} className="h-12 px-6 text-sm text-black bg-white">+ Add</button>
     );
 }
 

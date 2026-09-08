@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import authBanner from '../assets/authBanner.png'
 import googleLogo from '../assets/Google.png'
 import { useAuth } from "../contexts/AuthContext";
-import { supabase } from "../hooks/SupabaseClient";
+import { supabase } from "../utils/SupabaseClient.js";
 
 
 function Auth({option}) {  

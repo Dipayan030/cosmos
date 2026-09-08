@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, } from "react";
-import { supabase } from "../hooks/SupabaseClient";
+import { supabase } from "../utils/SupabaseClient.js";
 import { useNavigate } from "react-router-dom";
 
 const AdminAuthContext = createContext({});
