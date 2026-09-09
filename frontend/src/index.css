@@ -10,3 +10,13 @@
     --font-syne: "Syne", sans-serif;
     --color-space-dark : #050304;
 }
+
+@utility no-spinner {
+  appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+}

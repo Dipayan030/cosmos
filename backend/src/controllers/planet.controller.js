@@ -32,7 +32,11 @@ export const addPlanets = async(req,res) => {
             description: req.body.description,
             about: req.body.about,
             img: result.secure_url,
-            cloudinaryID: result.public_id
+            cloudinaryID: result.public_id,
+            equatorial_radius : req.body.equatorial_radius ,
+            orbital_period : req.body.orbital_period ,
+            mass_density : req.body.mass_density ,
+            solar_aphelion : req.body.solar_aphelion 
         });
         return res.status(201).json({
             message: "Planet added successfully",
@@ -63,7 +67,11 @@ export const editPlanets = async(req,res) => {
             about: req.body.about,
             img: result.secure_url,
             cloudinaryID: result.public_id,
-            planet_id: req.params.id
+            planet_id: req.params.id,
+            equatorial_radius : req.body.equatorial_radius ,
+            orbital_period : req.body.orbital_period ,
+            mass_density : req.body.mass_density ,
+            solar_aphelion : req.body.solar_aphelion 
         });
     } catch(err) {
         console.error("Error occured editng planet data:",err);
