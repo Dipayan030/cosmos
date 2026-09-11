@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
-function useFetch(url,options={}) {
+function useFetch(url, options = {}, { immediate = true } = {}) {
     const [ data, setData ] = useState([{}]);
     const [ error, setError ] = useState(null);
     const [ loading, setLoading ] = useState(null);
@@ -10,35 +10,39 @@ function useFetch(url,options={}) {
         optionsRef.current = options;
     }, [options]);
 
-    useEffect(() => {
-        const fetchData = async() => {
-            setLoading(true);
-            setError(null);
-            const API_BASE_URL = import.meta.env.PROD
-                ? import.meta.env.VITE_PROD_API_URL
-                : import.meta.env.VITE_LOCAL_API_URL;
-            console.log(API_BASE_URL+url);
-            try{
-                const response = await fetch(API_BASE_URL+url, {
-                    ...optionsRef.current
-                });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                };
-                const data = await response.json();
-                setData(data.data);
-            } catch (err) {
-                setError(err);
-                console.error("Error fetching data from server");
-            } finally {
-                setLoading(false);
+    const execute = useCallback(async (requestOptions = {}) => {
+        setLoading(true);
+        setError(null);
+        const API_BASE_URL = import.meta.env.PROD
+            ? import.meta.env.VITE_PROD_API_URL
+            : import.meta.env.VITE_LOCAL_API_URL;
+        try {
+            const response = await fetch(API_BASE_URL + url, {
+                ...optionsRef.current,
+                ...requestOptions,
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        };
+            const responseData = await response.json();
+            setData(responseData.data);
+            return responseData;
+        } catch (err) {
+            setError(err);
+            console.error("Error fetching data from server");
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    }, [url]);
 
-        fetchData();
-    },[url])
+    useEffect(() => {
+        if (immediate) {
+            execute();
+        }
+    }, [execute, immediate]);
 
-    return ({ data, error, loading });
+    return ({ data, error, loading, execute });
 }
 
 export default useFetch;

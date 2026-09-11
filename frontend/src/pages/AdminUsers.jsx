@@ -8,7 +8,7 @@ import useFetch from "../hooks/useFetch";
 function AdminUsers() {
     const { userSession } = useOutletContext();
     const { data, error, loading } = useFetch('/api/v1/admin/users/show', {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Authorization': `Bearer ${userSession.access_token}`,
             'Content-Type': 'application/json'

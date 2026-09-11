@@ -25,13 +25,34 @@ function AdminPlanets() {
     const addPlanetForm = () => {
         setAddIsFormVisible(true);
     };
-    const { data, error, loading } = useFetch('/api/v1/admin/planets/show', {
-        method: 'POST',
+    const { data, execute: reloadPlanets } = useFetch('/api/v1/admin/planets/show', {
+        method: 'GET',
         headers: {
             'Authorization': `Bearer ${userSession.access_token}`,
         }
     });
-    const uploadPlanetForm = async (e) => {};
+    const { execute: addPlanet } = useFetch('/api/v1/admin/planets/add', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${userSession.access_token}`,
+        }
+    }, { immediate: false });
+    const uploadPlanetForm = async (e) => {
+        e.preventDefault();
+        const payload = new FormData();
+
+        Object.entries(formData).forEach(([key, value]) => {
+            if (key !== 'image') {
+                payload.append(key, value);
+            }
+        });
+        payload.append('image', planetImage);
+
+        await addPlanet({ body: payload });
+        setAddIsFormVisible(false);
+        setPlanetImage(null);
+        await reloadPlanets();
+    };
 
     return (  
         <div className="bg-black min-h-screen w-full px-6 py-28 sm:px-12 lg:px-28 xl:py-32 relative flex flex-col gap-8 lg:gap-4 transition-all duration-500 ease-in-out overflow-hidden">
@@ -45,9 +66,11 @@ function AdminPlanets() {
             </div>
             <AdminTable 
                 data={data}
-                cols={7}
-                headerArr={['PlanetId','Name','Img','Equatorial Radius','Orbital Period','Mass Density','Solar Aphelion']}
+                cols={8}
+                headerArr={['PlanetId','Name','Status','Created at','Equatorial Radius','Orbital Period','Mass Density','Solar Aphelion']}
                 idName={'planet_id'}
+                keysToFilterOut={['description','about','img']}
+                highlightedVal={{ AvailableBg: 'bg-green-900', AvailableTxt: 'text-green-400', UnavailableBg: 'bg-red-900', UnavailableTxt: 'text-red-400'}}
             />
             {isAddFormVisible && (
                 <div className="absolute h-auto w-180 p-2 rounded-md bg-zinc-900 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">

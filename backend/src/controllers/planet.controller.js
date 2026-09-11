@@ -26,6 +26,7 @@ export const addPlanets = async(req,res) => {
             return res.status(500).json({ success: false, message: 'Failed uploading asset to cloud storage.' });
         };
         const planetId = uuidv7();
+        console.log(result.public_id,result.secure_url)
         await planetModel.add({
             planet_id: planetId,
             name: req.body.name,

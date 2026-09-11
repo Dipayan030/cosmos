@@ -9,6 +9,7 @@ export const planetModel = {
                 p.description,
                 p.about,
                 p.img,
+                p.status,
                 p.created_at,
                 ps.equatorial_radius,
                 ps.orbital_period,
@@ -50,7 +51,7 @@ export const planetModel = {
             await connection.beginTransaction();
             const query1 = `
                 INSERT INTO planets (planet_id, name, description, about, img, cloudinaryID) 
-                VALUES (UUID_TO_BIN(?), ?, ?, ?, ?);
+                VALUES (UUID_TO_BIN(?), ?, ?, ?, ?, ?);
             `;
             const query2 = `
                 INSERT INTO planet_stats (planet_id, equatorial_radius, orbital_period, mass_density, solar_aphelion)
