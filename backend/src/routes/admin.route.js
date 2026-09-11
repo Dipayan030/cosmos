@@ -12,14 +12,14 @@ router.use(adminAuth)
 
 router.route("/login").post(adminLogin)
 
-router.route("/users/show").post(getUsers)
+router.route("/users/show").get(getUsers)
 
-router.route("/planets/show").post(getPlanets)
-router.route("/planets/add").get(upload.single('image'), addPlanets)
-router.route("/planets/edit/:id").get(upload.single('image'), editPlanets)
+router.route("/planets/show").get(getPlanets)
+router.route("/planets/add").post(upload.single('image'), addPlanets)
+router.route("/planets/edit/:id").post(upload.single('image'), editPlanets)
 router.route("/plantes/delete/:id").delete(deletePlanets)
 
-router.route("/bookings/show").post(getBookings)
-router.route("/bookings/edit/:id").get(editBookings)
+router.route("/bookings/show").get(getBookings)
+router.route("/bookings/edit/:id").post(editBookings)
 
 export default router
