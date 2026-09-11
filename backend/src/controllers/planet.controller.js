@@ -26,6 +26,7 @@ export const addPlanets = async(req,res) => {
             return res.status(500).json({ success: false, message: 'Failed uploading asset to cloud storage.' });
         };
         const planetId = uuidv7();
+        console.log(result.public_id,result.secure_url)
         await planetModel.add({
             planet_id: planetId,
             name: req.body.name,
@@ -71,7 +72,7 @@ export const editPlanets = async(req,res) => {
             equatorial_radius : req.body.equatorial_radius ,
             orbital_period : req.body.orbital_period ,
             mass_density : req.body.mass_density ,
-            solar_aphelion : req.body.solar_aphelion
+            solar_aphelion : req.body.solar_aphelion 
         });
     } catch(err) {
         console.error("Error occured editng planet data:",err);

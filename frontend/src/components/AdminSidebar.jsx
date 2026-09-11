@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import { LayoutDashboard, Orbit, Earth, BookOpen, Rocket, Megaphone, User } from "lucide-react";
-import { useAdminAuth } from "./AdminAuthContext";
+import { useAdminAuth } from "../contexts/AdminAuthContext";
 
 function AdminSidebar() {
     const { user, role } = useAdminAuth();

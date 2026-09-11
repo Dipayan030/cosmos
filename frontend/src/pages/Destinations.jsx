@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom"
 import destinationData from '../data/mockData'
 import destinationBg from '../assets/destinations-hero.png'
-import FadeContent from './react-bits/FadeContent'
-import AnimatedContent from './react-bits/AnimatedContent'
+import FadeContent from '../components/react-bits/FadeContent'
+import AnimatedContent from '../components/react-bits/AnimatedContent'
 
 function Destinations (){
     return(

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../assets/hero.png';
-import SpecsSection from './SpecsSection';
-import BriefingSection from './BriefingSection';
+import SpecsSection from '../components/SpecsSection';
+import BriefingSection from '../components/BriefingSection';
 import Rocket from '../assets/rocket.png';
 import Deck from '../assets/deck.png'
-import FadeContent from './react-bits/FadeContent';
-import AnimatedContent from './react-bits/AnimatedContent';
-import CountUp from './react-bits/CountUp';
+import FadeContent from '../components/react-bits/FadeContent';
+import AnimatedContent from '../components/react-bits/AnimatedContent';
+import CountUp from '../components/react-bits/CountUp';
 
 export default function CosmosHome() {
   return (
@@ -94,9 +94,8 @@ export default function CosmosHome() {
                   separator=","
                   direction="up"
                   duration={0.05}
-                  className="count-up-text"
+                  className="count-up-text text-5xl font-space-mono"
                   delay={0}
-                  className='text-5xl font-space-mono'
               /> <span className='text-5xl font-space-mono'> +</span>
               <p className='text-lg text-white/50 font-space-grotesk mt-5'>Spacers Launched</p>
             </span>
@@ -107,9 +106,8 @@ export default function CosmosHome() {
                   separator=","
                   direction="up"
                   duration={0.05}
-                  className="count-up-text"
+                  className="count-up-text text-5xl font-space-mono"
                   delay={0}
-                  className='text-5xl font-space-mono'
               />
               <p className='text-lg text-white/50 font-space-grotesk mt-5'>Critical Hull Failures</p>
             </span>
@@ -120,9 +118,8 @@ export default function CosmosHome() {
                   separator=","
                   direction="up"
                   duration={0.05}
-                  className="count-up-text"
+                  className="count-up-text text-5xl font-space-mono"
                   delay={0}
-                  className='text-5xl font-space-mono'
               /> <span className='text-5xl font-space-mono'>%</span>
               <p className='text-lg text-white/50 font-space-grotesk mt-5'>Orbital Precision Rate</p>
             </span>
