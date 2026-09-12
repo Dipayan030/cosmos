@@ -21,6 +21,27 @@ export const planetModel = {
         const [rows] = await db.query(query);
         return rows;
     },
+
+    async toggleStatus(status,id) {
+        const connection = await db.getConnection();
+        try {
+            await connection.beginTransaction();
+            const query = `
+                UPDATE planets SET status=?
+                WHERE planet_id=UUID_TO_BIN(?);
+            `;
+            await connection.query(query,[
+                status,
+                id
+            ]);
+            await connection.commit();
+        } catch (error) {
+            await connection.rollback(); 
+            throw error;
+        } finally {
+            connection.release();
+        }
+    },
     
     async findById(planetId) {
         const query = `
