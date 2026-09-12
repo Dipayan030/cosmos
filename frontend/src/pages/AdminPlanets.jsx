@@ -68,10 +68,18 @@ function AdminPlanets() {
                 data={data}
                 cols={8}
                 headerArr={['PlanetId','Name','Status','Created at','Equatorial Radius','Orbital Period','Mass Density','Solar Aphelion']}
-                idName={'planet_id'}
+                idName={'BIN_TO_UUID(p.planet_id)'}
                 keysToFilterOut={['description','about','img']}
                 highlightedVal={{ AvailableBg: 'bg-green-900', AvailableTxt: 'text-green-400', UnavailableBg: 'bg-red-900', UnavailableTxt: 'text-red-400'}}
-            />
+                editPanel={
+                    <div className="absolute h-auto w-auto bg-zinc-800 rounded-md right-10 p-1.5 flex flex-col gap-2 items-center text-sm">
+                    <h1 className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Available</h1>
+                    <h1 className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Unavailable</h1>
+                    <h1 className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Edit</h1>
+                    <h1 className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Delete</h1>
+                    </div>
+                }
+            />  
             {isAddFormVisible && (
                 <div className="absolute h-auto w-180 p-2 rounded-md bg-zinc-900 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
                     <span className="w-full h-6 flex justify-end mb-2">
