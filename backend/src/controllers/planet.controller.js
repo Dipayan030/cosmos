@@ -16,6 +16,26 @@ export const getPlanets = async(req,res) => {
     }
 };
 
+export const toggleStatusPlanet = async(req,res) => {
+    try {
+        if (!req.params.id){
+            return res.status(400).json({ success: false, message: "PlanetId not found"});
+        };
+        const status = req.body.status;
+        const id = req.params.id;
+        await planetModel.toggleStatus(status,id);
+        return res.status(201).json({
+            message: "Planet Status toggled successfully",
+            data: {
+                status: req.body.status,
+                id: req.params.id
+            }
+        })
+    } catch (err) {
+        console.error('Error toggling status of planet', err);
+    }
+}
+
 export const addPlanets = async(req,res) => {
     try{
         if (!req.file) {
