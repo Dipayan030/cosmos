@@ -15,8 +15,8 @@ export const uploadToCloudinary = async (localFilePath) => {
 
     // Upload file to Cloudinary
     const response = await cloudinary.uploader.upload(localFilePath, {
-      resource_type: "auto", // Automatically detects images, videos, PDFs etc.
-      folder: "app_uploads" // Optional: organizes files inside a folder
+      resource_type: "image", // Automatically detects images, videos, PDFs etc.
+      folder: "cosmos" // Optional: organizes files inside a folder
     });
 
     // Delete local file after successful upload
@@ -35,9 +35,22 @@ export const uploadToCloudinary = async (localFilePath) => {
 // Delete old asset from Cloudinary using public_id
 export const deleteFromCloudinary = async (publicId) => {
   try {
-    if (!publicId) return;
-    await cloudinary.uploader.destroy(publicId);
+    if (!publicId){
+      console.error("No publicId provided for deletion");
+      return null;
+    } 
+    const response = await cloudinary.uploader.destroy(publicId, {
+      resource_type: "image"
+    });
+    if (response.result === 'ok') {
+      console.log("Asset deleted successfully from Cloudinary");
+      return response;
+    } else {
+      console.log("Cloudinary deletion failed:", response.result);
+      return null;
+    }
   } catch (error) {
     console.error('Error deleting from Cloudinary:', error);
+    return null
   }
 };

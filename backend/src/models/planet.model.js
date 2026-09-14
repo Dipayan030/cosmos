@@ -52,6 +52,7 @@ export const planetModel = {
                 p.description,
                 p.about,
                 p.img,
+                p.cloudinaryID,
                 p.created_at,
                 ps.equatorial_radius,
                 ps.orbital_period,
@@ -59,7 +60,7 @@ export const planetModel = {
                 ps.solar_aphelion
             FROM planets p
             LEFT JOIN planet_stats ps
-            ON p.planet_id = ps.planet_id;
+            ON p.planet_id = ps.planet_id
             WHERE p.planet_id = UUID_TO_BIN(?);
         `;
         const [rows] = await db.query(query,[planetId]);
@@ -147,10 +148,14 @@ export const planetModel = {
         const connection = await db.getConnection();
         try {
             await connection.beginTransaction();
-            const query = `
+            const query1 = `
+                DELETE FROM planet_stats WHERE planet_id = UUID_TO_BIN(?);
+            `;
+            const query2 = `
                 DELETE FROM planets WHERE planet_id = UUID_TO_BIN(?);
             `;
-            await connection.query(query,[planetId]);
+            await connection.query(query1,[planetId]);
+            await connection.query(query2,[planetId]);
             await connection.commit();
         } catch(error) {
             await connection.rollback(); 

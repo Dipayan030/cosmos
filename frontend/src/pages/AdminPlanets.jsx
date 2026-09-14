@@ -37,6 +37,19 @@ function AdminPlanets() {
             'Authorization': `Bearer ${userSession.access_token}`,
         }
     }, { immediate: false });
+    const { execute: toggleStatusPlanet } = useFetch('/api/v1/admin/planets/status', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${userSession.access_token}`,
+            'Content-Type': 'application/json',
+        }
+    }, { immediate: false });
+    const { execute: deletePlanet } = useFetch('/api/v1/admin/plantes/delete', {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${userSession.access_token}`,
+        }
+    }, { immediate: false });
     const uploadPlanetForm = async (e) => {
         e.preventDefault();
         const payload = new FormData();
@@ -53,6 +66,20 @@ function AdminPlanets() {
         setPlanetImage(null);
         await reloadPlanets();
     };
+    const toggleSts = async (id,sts) => {
+        await toggleStatusPlanet({
+            requestUrl: `/api/v1/admin/planets/status/${id}`,
+            body: JSON.stringify({ status: sts })
+        });
+        await reloadPlanets();
+    }
+    
+    const dltPlanet = async (id) => {
+        await deletePlanet({
+            requestUrl: `/api/v1/admin/plantes/delete/${id}`,
+        });
+        await reloadPlanets();
+    }
 
     return (  
         <div className="bg-black min-h-screen w-full px-6 py-28 sm:px-12 lg:px-28 xl:py-32 relative flex flex-col gap-8 lg:gap-4 transition-all duration-500 ease-in-out overflow-hidden">
@@ -70,15 +97,15 @@ function AdminPlanets() {
                 headerArr={['PlanetId','Name','Status','Created at','Equatorial Radius','Orbital Period','Mass Density','Solar Aphelion']}
                 idName={'BIN_TO_UUID(p.planet_id)'}
                 keysToFilterOut={['description','about','img']}
-                highlightedVal={{ AvailableBg: 'bg-green-900', AvailableTxt: 'text-green-400', UnavailableBg: 'bg-red-900', UnavailableTxt: 'text-red-400'}}
-                editPanel={
+                highlightedVal={{ AvailableBg: 'bg-green-900', AvailableTxt: 'text-green-300', UnavailableBg: 'bg-rose-900', UnavailableTxt: 'text-rose-300'}}
+                editPanel={(id) => (
                     <div className="absolute h-auto w-auto bg-zinc-800 rounded-md right-10 p-1.5 flex flex-col gap-2 items-center text-sm">
-                    <h1 className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Available</h1>
-                    <h1 className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Unavailable</h1>
-                    <h1 className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Edit</h1>
-                    <h1 className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Delete</h1>
+                        <button onClick={(e) => toggleSts(id,'Available')} className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Available</button>
+                        <button onClick={(e) => toggleSts(id,'Unavailable')} className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Unavailable</button>
+                        <button className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Edit</button>
+                        <button onClick={(e) => dltPlanet(id)} className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Delete</button>
                     </div>
-                }
+                )}
             />  
             {isAddFormVisible && (
                 <div className="absolute h-auto w-180 p-2 rounded-md bg-zinc-900 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
