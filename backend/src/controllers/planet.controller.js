@@ -21,13 +21,16 @@ export const toggleStatusPlanet = async(req,res) => {
         if (!req.params.id){
             return res.status(400).json({ success: false, message: "PlanetId not found"});
         };
-        const status = req.body.status;
+        const status = req.body?.status;
         const id = req.params.id;
+        if (!status) {
+            return res.status(400).json({ success: false, message: "Planet status not found" });
+        }
         await planetModel.toggleStatus(status,id);
         return res.status(201).json({
             message: "Planet Status toggled successfully",
             data: {
-                status: req.body.status,
+                status,
                 id: req.params.id
             }
         })
@@ -104,7 +107,11 @@ export const deletePlanets = async(req,res) => {
         const planetId = req.params.id;
         const planet = await planetModel.findById(planetId);
         if (!planet || !planet[0]) return res.status(404).json({ message: 'Planet not found' });
-        await deleteFromCloudinary(planet[0].cloudinaryID);
+        const response = await deleteFromCloudinary(planet[0].cloudinaryID);
+        if (response == null){
+            console.log("Cloudinary deletion failed");
+            return null;
+        }
         await planetModel.delete(planetId);
     } catch(err) {
         console.error("Error deleting plaenet form db", err)
