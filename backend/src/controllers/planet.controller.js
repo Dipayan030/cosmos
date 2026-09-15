@@ -1,6 +1,7 @@
 import { planetModel } from "../models/planet.model.js";
 import { deleteFromCloudinary, uploadToCloudinary } from "../utils/cloudinary.js";
 import { v7 as uuidv7 } from 'uuid';
+import { Parser } from 'json2csv';
 
 export const getPlanets = async(req,res) => {
     try{
@@ -115,5 +116,23 @@ export const deletePlanets = async(req,res) => {
         await planetModel.delete(planetId);
     } catch(err) {
         console.error("Error deleting plaenet form db", err)
+    }
+};
+
+export const csvExportPlanets = async(req,res) => {
+    try {
+        const data = await planetModel.findAll();
+        if(!data) {
+            console.log("Failed getting data from db");
+            return null;
+        }
+        const fields = ['PlanetId', 'Name', 'Description', 'About', 'Image', 'status','created_at','equatorial_radius','orbital_period','mass_density','solar_aphelion']
+        const json2csvParser = new Parser({ fields });
+        const csvData = json2csvParser.parse(data);
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename=planet_data.csv');
+        return res.status(200).send(csvData);
+    } catch (err) {
+        console.error("Error exporting bookings data", err);
     }
 };
