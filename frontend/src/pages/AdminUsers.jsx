@@ -7,6 +7,7 @@ import useFetch from "../hooks/useFetch";
 
 function AdminUsers() {
     const { userSession } = useOutletContext();
+    const [ isExporting, setIsExporting ] = useState(false);
     const { data, error, loading } = useFetch('/api/v1/admin/users/show', {
         method: 'GET',
         headers: {
@@ -14,6 +15,32 @@ function AdminUsers() {
             'Content-Type': 'application/json'
         }
     });
+    const { execute: csvExportUser } = useFetch('/api/v1/admin/users/export', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${userSession.access_token}`,
+        }
+    }, { immediate: false })
+    const exportUser = async () => {
+        setIsExporting(true);
+        try{ 
+            const blobData = await csvExportUser({ responseType: 'blob' });
+            const url = window.URL.createObjectURL(blobData);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'users_data.csv');
+            
+            document.body.appendChild(link);
+            link.click();
+            
+            link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error("Error downloading csv data in frontend");
+        } finally {
+            setIsExporting(false);
+        }
+    }
 
     return (  
         <div className="bg-black min-h-screen w-full px-6 py-28 sm:px-12 lg:px-28 xl:py-32 flex flex-col gap-8 lg:gap-4 transition-all duration-500 ease-in-out overflow-hidden">
@@ -21,11 +48,11 @@ function AdminUsers() {
             <div className="flex w-full h-14 items-center justify-between">
                 <AdminSearch />
                 <span className="flex gap-3 items-center">
-                    <AdminExport />
+                    <AdminExport exportFunc={exportUser} disablFunc={isExporting}/>
                 </span>
             </div>
             <AdminTable 
-                data={data}
+                data={data}disablFunc={isExporting}
                 cols={5}
                 headerArr={['SpaceId','Email','Name','Created at','Last Sign in at']}
                 idName={'space_id'}

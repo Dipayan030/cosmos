@@ -10,6 +10,7 @@ import useFetch from "../hooks/useFetch";
 function AdminPlanets() {
     const { userSession } = useOutletContext();
     const [ planetImage, setPlanetImage ] = useState(null);
+    const [ isExporting, setIsExporting ] = useState(false);
     const [ formData, setFormData ] = useState({
         name: '',
         description: '',
@@ -44,12 +45,18 @@ function AdminPlanets() {
             'Content-Type': 'application/json',
         }
     }, { immediate: false });
-    const { execute: deletePlanet } = useFetch('/api/v1/admin/plantes/delete', {
+    const { execute: deletePlanet } = useFetch('/api/v1/admin/planets/delete', {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${userSession.access_token}`,
         }
     }, { immediate: false });
+    const { execute: csvExportPlanet } = useFetch('/api/v1/admin/planets/export', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${userSession.access_token}`,
+        }
+    }, { immediate: false })
     const uploadPlanetForm = async (e) => {
         e.preventDefault();
         const payload = new FormData();
@@ -73,12 +80,31 @@ function AdminPlanets() {
         });
         await reloadPlanets();
     }
-    
     const dltPlanet = async (id) => {
         await deletePlanet({
             requestUrl: `/api/v1/admin/plantes/delete/${id}`,
         });
         await reloadPlanets();
+    }
+    const exportPlanet = async () => {
+        setIsExporting(true);
+        try{
+            const blobData = await csvExportPlanet({ responseType: 'blob' });
+            const url = window.URL.createObjectURL(blobData);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'planets_data.csv');
+            
+            document.body.appendChild(link);
+            link.click();
+            
+            link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error("Error downloading csv data in frontend")
+        } finally {
+            setIsExporting(false);
+        }
     }
 
     return (  
@@ -88,7 +114,7 @@ function AdminPlanets() {
                 <AdminSearch />
                 <span className="flex gap-3 items-center">
                     <AdminAdd  onClickBtn={addPlanetForm}/>
-                    <AdminExport />
+                    <AdminExport exportFunc={exportPlanet} disablFunc={isExporting} />
                 </span>
             </div>
             <AdminTable 
@@ -102,7 +128,6 @@ function AdminPlanets() {
                     <div className="absolute h-auto w-auto bg-zinc-800 rounded-md right-10 p-1.5 flex flex-col gap-2 items-center text-sm">
                         <button onClick={(e) => toggleSts(id,'Available')} className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Available</button>
                         <button onClick={(e) => toggleSts(id,'Unavailable')} className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Unavailable</button>
-                        <button className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Edit</button>
                         <button onClick={(e) => dltPlanet(id)} className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Delete</button>
                     </div>
                 )}

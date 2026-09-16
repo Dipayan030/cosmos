@@ -126,7 +126,7 @@ export const csvExportPlanets = async(req,res) => {
             console.log("Failed getting data from db");
             return null;
         }
-        const fields = ['PlanetId', 'Name', 'Description', 'About', 'Image', 'status','created_at','equatorial_radius','orbital_period','mass_density','solar_aphelion']
+        const fields = ['BIN_TO_UUID(p.planet_id)', 'name', 'description', 'about', 'img', 'status','created_at','equatorial_radius','orbital_period','mass_density','solar_aphelion']
         const json2csvParser = new Parser({ fields });
         const csvData = json2csvParser.parse(data);
         res.setHeader('Content-Type', 'text/csv');
