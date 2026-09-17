@@ -2,6 +2,7 @@ import { usersModel } from "../models/user.model.js"
 import { sendEmail } from "../utils/brevo.js";
 import { json } from "express";
 import { generateId } from "../utils/idGenerator.js";
+import { Parser } from "json2csv";
 
 export const signUp = async (req,res) => {
     try{
@@ -52,3 +53,21 @@ export const getUsers = async(req,res) => {
         console.error("Error getting user data from db", err);
     }
 };
+
+export const csvExportUsers = async(req,res) => {
+    try {
+        const data = await usersModel.findAll();
+        if(!data) {
+            console.log("Failed getting data from db");
+            return null;
+        }
+        const fields = ['space_id','email','name','created_at','last_sign_in_at']
+        const json2csvParser = new Parser({ fields });
+        const csvData = json2csvParser.parse(data);
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename=users_data.csv');
+        return res.status(200).send(csvData);
+    } catch (err) {
+        console.error("Error exporting bookings data", err);
+    }
+}

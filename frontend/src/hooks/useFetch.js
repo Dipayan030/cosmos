@@ -16,7 +16,7 @@ function useFetch(url, options = {}, { immediate = true } = {}) {
         const API_BASE_URL = import.meta.env.PROD
             ? import.meta.env.VITE_PROD_API_URL
             : import.meta.env.VITE_LOCAL_API_URL;
-        const { requestUrl, ...fetchOptions } = requestOptions;
+        const { requestUrl, responseType = 'json', ...fetchOptions } = requestOptions;
         try {
             const response = await fetch(API_BASE_URL + (requestUrl || url), {
                 ...optionsRef.current,
@@ -25,8 +25,8 @@ function useFetch(url, options = {}, { immediate = true } = {}) {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const responseData = await response.json();
-            setData(responseData.data);
+            const responseData = await response[responseType]();
+            setData(responseType === 'json' ? responseData.data : responseData);
             return responseData;
         } catch (err) {
             setError(err);
