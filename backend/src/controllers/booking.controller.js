@@ -1,5 +1,6 @@
 import { bookingModel } from "../models/booking.model.js";
 import { generateId } from "../utils/idGenerator.js";
+import { Parser } from "json2csv";
 
 export const getBookings = async(req,res) => {
     try{
@@ -85,5 +86,23 @@ export const editBookings = async(req,res) => {
         });
     } catch(err) {
         console.error("Error editing booking status in db:", err);
+    }
+};
+
+export const csvExportBookings = async(req,res) => {
+    try {
+        const data = await bookingModel.findAll();
+        if (!data) {
+            console.log('Failed getting data from db:');
+            return null 
+        }
+        const fields = ['booking_id','user_id','planet_id','status','space_id','ticket_id','departure_station','created_at']
+        const json2csvParser = new Parser({ fields });
+        const csvData = json2csvParser.parse(data)
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename=planet_data.csv');
+        return res.status(200).send(csvData);
+    } catch (err) {
+        console.error("Error exporting bookings data", err);
     }
 };
