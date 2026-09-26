@@ -1,6 +1,12 @@
+import { render } from "@react-email/components";
 import { bookingModel } from "../models/booking.model.js";
 import { generateId } from "../utils/idGenerator.js";
 import { Parser } from "json2csv";
+import ConfirmationEmail from "../../emails/ConfirmationEmail.jsx";
+import CancelationEmail from "../../emails/CancelationEmail.jsx";
+import BeginingEmail from "../../emails/BeginingEmail.jsx";
+import CompletionEmail from "../../emails/CompletionEmail.jsx";
+import { sendEmail } from "../utils/brevo.js";
 
 export const getBookings = async(req,res) => {
     try{
@@ -58,7 +64,7 @@ export const cancelBooking = async(req,res) => {
         if(!booking || !booking[0]) {
             res.status(404).json({ message: "Booking not found to be cancelled" });
         };
-        await bookingModel.edit({
+        await bookingModel.toggleStatus({
             status: 'cancelled',
             booking_id: bookingId
         });
@@ -70,17 +76,62 @@ export const cancelBooking = async(req,res) => {
     }
 }
 
-export const editBookings = async(req,res) => {
+export const toggleBookingsStatus = async(req,res) => {
     try {
         const bookingId = req.params.id;
         const booking = await bookingModel.findById(bookingId);
         if(!booking || !booking[0]){
             res.status(404).json({ message: "Booking not found" });
         };
-        await bookingModel.edit({
+        await bookingModel.toggleStatus({
            status: req.body.status,
            booking_id: bookingId
         });
+        const stsEmails = {
+            confirmed : {
+                htmlCont : ConfirmationEmail({
+                    userFirstname : booking[0]?.name.slice(0 , booking[0]?.name.indexOf(' ')), 
+                    destination : booking[0]?.destination, 
+                    fullName : booking[0]?.name, 
+                    bookingId : booking[0]?.booking_id, 
+                    departureStation : booking[0]?.departure_station, 
+                    date : booking[0]?.created_at
+                }),
+                subject: 'Booking Confirmed'
+            },
+            cancelled : {
+                htmlCont: CancelationEmail({
+                    userFirstname : booking[0]?.name.slice(0 , booking[0]?.name.indexOf(' ')),
+                    destination : booking[0]?.destination,
+                    bookingId : booking[0]?.booking_id
+                }),
+                subject: 'Booking Cancelled'
+            },
+            started : {
+                htmlCont: BeginingEmail({
+                    userFirstname : booking[0]?.name.slice(0 , booking[0]?.name.indexOf(' ')), 
+                    destination : booking[0]?.destination, 
+                    bookingId : booking[0]?.booking_id
+                }),
+                subject: 'Your Journey Has Started'
+            },
+            completed : {
+                htmlCont: CompletionEmail({
+                    userFirstname : booking[0]?.name.slice(0 , booking[0]?.name.indexOf(' ')), 
+                    destination : booking[0]?.destination
+                }),
+                subject: 'Journey Completed'
+            }
+        };
+        const htmlContent = await render(stsEmails.req.body.status.htmlCont);
+        await sendEmail(
+            htmlContent,
+            stsEmails.req.body.status.subject,
+            {
+                email: booking[0].email,
+                name: booking[0].name
+            }
+        );
         return res.status(200).json({
             message: "Successfully edited booking status",
         });

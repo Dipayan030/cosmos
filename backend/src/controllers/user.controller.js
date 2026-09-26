@@ -32,7 +32,7 @@ export const signUp = async (req,res) => {
         const htmlContent = await render(WelcomeEmail({ userFirstname: userFirstname}));
         await sendEmail(
             htmlContent,
-            "Welcome to COSMOS",
+            "Signed-In to COSMOS",
             {
                 email: user.email,
                 name: user.user_metadata?.name || user.user_metadata.full_name,

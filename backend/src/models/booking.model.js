@@ -11,14 +11,28 @@ export const bookingModel = {
 
     async findById(bookingId) {
         const query = `
-        SELECT * FROM booking
+        SELECT 
+            b.booking_id,
+            b.user_id,
+            b.planet_id,
+            b.status,
+            b.space_id,
+            b.ticket_id,
+            b.departure_station,
+            b.created_at,
+            u.name,
+            u.email,
+            p.name as destination
+        FROM booking b
+        JOIN users u ON b.user_id = u.user_id
+        JOIN planets p ON b.planet_id = p.planet_id
         WHERE booking_id=?
         `;
         const [rows] = await db.query(query,[bookingId]);
         return rows;
     },
     
-    async edit(newBookingData) {
+    async toggleStatus(newBookingData) {
         const connection = await db.getConnection();
         try {
             await connection.beginTransaction();

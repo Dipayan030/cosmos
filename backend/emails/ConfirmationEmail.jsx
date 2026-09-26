@@ -1,7 +1,7 @@
 import { Html, Head, Body, Container, Text, Heading, Tailwind, Row, Column, Link, Button } from "@react-email/components";
 import React from "react";
 
-export default function ConfirmationEmail({ userFirstname, destination, fullName, bookingId, departureStation, date }) {
+export default function ConfirmationEmail({ userFirstname, destination, fullName, bookingId, departureStation, date, barCodeLink }) {
     return(
         <Html>
             <Head />
@@ -33,7 +33,7 @@ export default function ConfirmationEmail({ userFirstname, destination, fullName
                                 Date : {date}
                             </Text>
                         </Container>
-                        <Container className="w-52 h-14 bg-[url(https://res.cloudinary.com/ithcqaje/image/upload/v1790363208/barcode.gif)] bg-contain bg-no-repeat bg-center "></Container>
+                        <Container className={`w-52 h-14 bg-[url(${barCodeLink})] bg-contain bg-no-repeat bg-center `}></Container>
                     </Container>
                     <Text className='mt-18 text-xs'>Warm regards,<br />The COSMOS Team</Text>
                     </Container>
