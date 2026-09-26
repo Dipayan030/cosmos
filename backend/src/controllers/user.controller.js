@@ -3,6 +3,8 @@ import { sendEmail } from "../utils/brevo.js";
 import { json } from "express";
 import { generateId } from "../utils/idGenerator.js";
 import { Parser } from "json2csv";
+import { render } from "@react-email/components";
+import WelcomeEmail from "../../emails/WelcomeEmail.jsx";
 
 export const signUp = async (req,res) => {
     try{
@@ -26,9 +28,11 @@ export const signUp = async (req,res) => {
             role: 'user',
             space_id: generateId('SP')
         });
+        const userFirstname = user?.user_metadata.full_name.slice(0 , user?.user_metadata.full_name.indexOf(' '));
+        const htmlContent = await render(WelcomeEmail({ userFirstname: userFirstname}));
         await sendEmail(
-            `<h1>Welcome! ${user.user_metadata?.name}</h1>`,
-            "Hello from COSMOS",
+            htmlContent,
+            "Signed-In to COSMOS",
             {
                 email: user.email,
                 name: user.user_metadata?.name || user.user_metadata.full_name,
