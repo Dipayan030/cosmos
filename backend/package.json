@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch --env-file=.env src/index.js",
+    "start": "tsx src/index.js",
     "email:dev": "email dev"
   },
   "keywords": [],
@@ -24,12 +25,12 @@
     "multer": "^2.2.0",
     "mysql2": "^3.23.1",
     "react-email": "^6.11.0",
+    "tsx": "^4.23.15",
     "uuid": "^14.0.2"
   },
   "devDependencies": {
     "@react-email/ui": "^6.11.0",
     "nodemon": "^3.1.14",
-    "prettier": "^3.9.6",
-    "tsx": "^4.23.15"
+    "prettier": "^3.9.6"
   }
 }
