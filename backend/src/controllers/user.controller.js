@@ -1,10 +1,9 @@
 import { usersModel } from "../models/user.model.js"
 import { sendEmail } from "../utils/brevo.js";
-import { json } from "express";
 import { generateId } from "../utils/idGenerator.js";
 import { Parser } from "json2csv";
 import { render } from "@react-email/components";
-import WelcomeEmail from "../../emails/WelcomeEmail.jsx";
+import { WelcomeEmail } from "../../dist/emails/WelcomeEmail.js";
 
 export const signUp = async (req,res) => {
     try{
