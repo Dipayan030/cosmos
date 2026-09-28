@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch --env-file=.env src/index.js",
+    "dev": "npm run build && tsx watch --env-file=.env src/index.js",
+    "build": "esbuild emails/*.jsx --format=esm --outdir=dist/emails",
+    "start": "node src/index.js",
     "email:dev": "email dev"
   },
   "keywords": [],
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "@react-email/ui": "^6.11.0",
+    "esbuild": "^0.28.2",
     "nodemon": "^3.1.14",
     "prettier": "^3.9.6",
     "tsx": "^4.23.15"
