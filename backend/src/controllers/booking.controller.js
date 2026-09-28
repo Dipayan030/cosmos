@@ -2,10 +2,10 @@ import { render } from "@react-email/components";
 import { bookingModel } from "../models/booking.model.js";
 import { generateId } from "../utils/idGenerator.js";
 import { Parser } from "json2csv";
-import ConfirmationEmail from "../../emails/ConfirmationEmail.js";
-import CancelationEmail from "../../emails/CancelationEmail.js";
-import BeginingEmail from "../../emails/BeginingEmail.js";
-import CompletionEmail from "../../emails/CompletionEmail.js";
+import ConfirmationEmail from "../../dist/emails/ConfirmationEmail.js";
+import CancelationEmail from "../../dist/emails/CancelationEmail.js";
+import BeginingEmail from "../../dist/emails/BeginingEmail.js";
+import CompletionEmail from "../../dist/emails/CompletionEmail.js";
 import { sendEmail } from "../utils/brevo.js";
 
 export const getBookings = async(req,res) => {
