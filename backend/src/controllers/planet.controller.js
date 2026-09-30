@@ -17,6 +17,19 @@ export const getPlanets = async(req,res) => {
     }
 };
 
+export const getPlanetById = async(req, res) => {
+    try {
+        const [planet] = await planetModel.findById(req.params.id);
+        if (!planet) {
+            return res.status(404).json({ success: false, message: "Planet not found" });
+        }
+        return res.status(200).json({ data: planet });
+    } catch (err) {
+        console.error("Error getting planet data from db", err);
+        return res.status(500).json({ success: false, message: "Error getting planet data from db" });
+    }
+};
+
 export const toggleStatusPlanet = async(req,res) => {
     try {
         if (!req.params.id){

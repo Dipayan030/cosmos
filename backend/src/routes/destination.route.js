@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { getPlanets } from "../controllers/planet.controller.js";
+import { getPlanetById, getPlanets } from "../controllers/planet.controller.js";
 
 const router = Router();
 
-router.route("/show").post(getPlanets)
+router.route("/show").get(getPlanets)
+router.route("/show/:id").get(getPlanetById)
 
 export default router

@@ -1,21 +1,31 @@
-import React from "react"
 import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
-import destinationData from "../data/mockData"
+import useFetch from "../hooks/useFetch"
 import Sidebar from "../components/Sidebar"
 import CountUp from "../components/react-bits/CountUp"
 import FadeContent from "../components/react-bits/FadeContent"
 
 export default function Planet(){
     const {id} = useParams();
+    const { data: destinationData, error, loading } = useFetch(`/api/v1/destinations/show/${id}`, {
+        method: 'GET',
+    });
+
+    if (loading || (!destinationData?.name && !error)) {
+        return <div className="bg-black min-h-screen p-8 text-white">Loading destination...</div>;
+    }
+    if (error || !destinationData?.name) {
+        return <div className="bg-black min-h-screen p-8 text-white">Unable to load this destination.</div>;
+    }
+
     return(
-        <div style={{ backgroundImage: `url(${destinationData[id].img})` }} className="bg-black h-screen max-w-screen p-6 sm:p-12 lg:p-28 bg-cover bg-center bg-no-repeat flex flex-col justify-end items-end gap-8 lg:gap-18 transition-all duration-500 ease-in-out overflow-hidden">
+        <div style={{ backgroundImage: `url(${destinationData.img})` }} className="bg-black h-screen max-w-screen p-6 sm:p-12 lg:p-28 bg-cover bg-center bg-no-repeat flex flex-col justify-end items-end gap-8 lg:gap-18 transition-all duration-500 ease-in-out overflow-hidden">
             <Sidebar/>
             <FadeContent blur={true} duration={1000} easing="ease-out" initialOpacity={0} className='w-6/7'>
                 <span className="font-space-grotesk flex flex-col gap-5 transition-all duration-700 ease-in-out">
-                    <h1 className="text-4xl lg:text-7xl text-white text-right font-medium">{destinationData[id].name}</h1>
+                    <h1 className="text-4xl lg:text-7xl text-white text-right font-medium">{destinationData.name}</h1>
                     <h2 className="text-right text-[#6E6E6E] text-sm lg:text-xl">ORBITAL PARAMETERS RETRIEVED // LIVE SECURE LINK</h2>
-                    <p className="text-sm lg:text-lg text-right lg:w-4/5 xl:w-3/5 2xl:w-1/2 self-end text-white/70">{destinationData[id].desc}</p>
+                    <p className="text-sm lg:text-lg text-right lg:w-4/5 xl:w-3/5 2xl:w-1/2 self-end text-white/70">{destinationData.description}</p>
                 </span>
             </FadeContent>
             <span className="flex flex-col gap-12 lg:gap-0 lg:flex lg:flex-row lg:justify-between w-full lg:items-center">
@@ -29,7 +39,7 @@ export default function Planet(){
                         <h1 className="text-xl lg:text-4xl font-space-mono">
                             <CountUp
                                 from={0}
-                                to={destinationData[id].equaRadius}
+                                to={destinationData.equatorial_radius}
                                 separator=","
                                 direction="up"
                                 duration={0.05}
@@ -44,7 +54,7 @@ export default function Planet(){
                         <h1 className="text-xl lg:text-4xl font-space-mono">
                             <CountUp
                                 from={0}
-                                to={destinationData[id].oritalPeriod}
+                                to={destinationData.orbital_period}
                                 separator=","
                                 direction="up"
                                 duration={0.05}
@@ -59,7 +69,7 @@ export default function Planet(){
                         <h1 className="text-xl lg:text-4xl font-space-mono">
                             <CountUp
                                 from={0}
-                                to={destinationData[id].density}
+                                to={destinationData.mass_density}
                                 separator=","
                                 direction="up"
                                 duration={0.05}
@@ -74,7 +84,7 @@ export default function Planet(){
                         <h1 className="text-xl lg:text-4xl font-space-mono">
                             <CountUp
                                 from={0}
-                                to={destinationData[id].solarAphelion}
+                                to={destinationData.solar_aphelion}
                                 separator=","
                                 direction="up"
                                 duration={0.05}
