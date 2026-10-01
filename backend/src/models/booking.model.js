@@ -44,8 +44,8 @@ export const bookingModel = {
         try {
             await connection.beginTransaction();
             const query = `
-                INSTER INTO booking (user_id, planet_id, status, space_id, ticket_id, departure_station, created_at)
-                VALUES (?,UUID_TO_BIN(?),?,?,?,?,?);
+                INSERT INTO booking (user_id, planet_id, status, space_id, ticket_id, departure_station)
+                VALUES (?,UUID_TO_BIN(?),?,?,?,?);
             `;
             await connection.query(query, [
                 bookingData.user_id,

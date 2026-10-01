@@ -6,7 +6,7 @@ const router = Router();
 
 router.use(userAuth)
 
-router.route("/book/:id").get(addBooking)
+router.route("/book/:id").post(addBooking)
 router.route("/show").post(showBookings)
 router.route("/cancel/:id").post(cancelBooking)
 

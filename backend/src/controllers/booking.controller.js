@@ -19,20 +19,25 @@ export const getBookings = async(req,res) => {
 export const addBooking = async(req,res) => {
     try {
         const user = req.user;
-        if (!user || user.id) {
-            return res.status(404).json({ message: "Not valid user" });
+        if (!user?.id) {
+            return res.status(401).json({ message: "Not valid user" });
         };
+        const { space_id, departure_station } = req.body;
+        if (!space_id || !departure_station) {
+            return res.status(400).json({ message: "Space ID and departure station are required" });
+        }
         await bookingModel.add({
             user_id: user.id,
             planet_id: req.params.id,
             status: 'pending',
-            space_id: req.body.space_id,
+            space_id,
             ticket_id: generateId('TKT'),
-            departure_station: req.body.departure_station
+            departure_station
         });
-        return res.status(200).json({ message: "Booking added successfuly!" });
+        return res.status(201).json({ message: "Booking added successfully!" });
     } catch(err) {
         console.error("Error adding new booking:", err);
+        return res.status(500).json({ message: "Unable to create booking" });
     }
 };
 
