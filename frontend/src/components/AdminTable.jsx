@@ -65,7 +65,7 @@ function AdminTable({ data, cols, headerArr, idName, keysToFilterOut=[], highlig
                                 {isCopied==value && (
                                     <span key={value} className="bg-zinc-800 absolute -top-2 px-2 py-1 text-white/30 rounded-md font-space-grotesk text-xs">Copied: {value}</span>
                                 )}
-                                <p className={`${highlightedVal[value+'Bg']} ${highlightedVal[value+'Txt']} px-3 py-1 rounded-md w-auto`}>{value.length>20 ? value.slice(0,18)+'...' : value}</p>
+                                <p className={`${highlightedVal[value+'Bg']} ${highlightedVal[value+'Txt']} px-3 py-1 rounded-md w-auto`}>{value.length>20 ? value.slice(0,16)+'...' : value}</p>
                                 </h1>
                             </>
                             ))}

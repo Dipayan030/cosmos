@@ -123,7 +123,7 @@ function AdminPlanets() {
                 headerArr={['PlanetId','Name','Status','Created at','Equatorial Radius','Orbital Period','Mass Density','Solar Aphelion']}
                 idName={'BIN_TO_UUID(p.planet_id)'}
                 keysToFilterOut={['description','about','img']}
-                highlightedVal={{ AvailableBg: 'bg-green-900', AvailableTxt: 'text-green-300', UnavailableBg: 'bg-rose-900', UnavailableTxt: 'text-rose-300'}}
+                highlightedVal={{ AvailableBg: 'bg-green-900', AvailableTxt: 'text-green-300', UnavailableBg: 'bg-rose-900', UnavailableTxt: 'text-rose-300', NewBg: 'bg-blue-900/60', NewTxt: 'text-blue-400'}}
                 editPanel={(id) => (
                     <div className="absolute h-auto w-auto bg-zinc-800 rounded-md right-10 p-1.5 flex flex-col gap-2 items-center text-sm">
                         <button onClick={(e) => toggleSts(id,'Available')} className="py-2 px-4 w-full text-center rounded-sm bg-zinc-700 text-white/60">Available</button>

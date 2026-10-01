@@ -6,7 +6,7 @@ import AnimatedContent from '../components/react-bits/AnimatedContent'
 
 function Destinations (){
     const { data, error, loading } = useFetch('/api/v1/destinations/show', {
-        method: 'POST',
+        method: 'GET',
     });
     const destinationData = Array.isArray(data)
         ? data.filter((destination) => destination.name)
@@ -50,7 +50,10 @@ function Destinations (){
                             <div className="h-1/2 flex flex-col gap-6 md:gap-12 lg:gap-18 2xl:gap-0 justify-end lg:py-6 ">
                                 <Link to={`/destinations/${destinationId}`} className="h-1/2"><h1 className="text-7xl xl:text-7xl 2xl:text-8xl font-space-grotesk font-medium">{destination.name}</h1></Link>
                                 { destination.status==='Unavailable' && (
-                                    <span className="bg-rose-900 text-rose-300 w-22 flex justify-around py-1 rounded-md text-sm lg:mb-6">{destination.status}</span>
+                                    <span className="bg-rose-900/60 text-rose-400 w-22 flex justify-around py-1 rounded-md text-sm lg:mb-6">{destination.status}</span>
+                                )}
+                                { destination.status==='New' && (
+                                    <span className="bg-blue-900/60 text-blue-400 w-22 flex justify-around py-1 rounded-md text-sm lg:mb-6">{destination.status}</span>
                                 )}
                                 <p className="text-md md:text-xl lg:text-3xl xl:text-2xl 2xl:text-2xl font-space-grotesk text-white/70">{destination.about}</p>
                             </div>
