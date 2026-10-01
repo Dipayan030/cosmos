@@ -6,6 +6,7 @@ const AuthContext = createContext({});
 function AuthProvider({ children }) {
     const [session , setSession] = useState(null);
     const [user , setUser] = useState(null);
+    const [spaceId, setSpaceId] = useState('');
     const [loading , setLoading] = useState(true);
     
     async function syncUserWithBackend(currentSession) {
@@ -27,6 +28,7 @@ function AuthProvider({ children }) {
             }
 
             const data = await response.json();
+            setSpaceId(data.user?.space_id ?? '');
             console.log('✅ Synced with Aiven Backend');
         } catch (error) {
             console.error('❌ Error syncing user with backend:', error);
@@ -59,6 +61,7 @@ function AuthProvider({ children }) {
     const value = {
         session,
         user,
+        spaceId,
         loading,
         signOut: () => supabase.auth.signOut(),
     };

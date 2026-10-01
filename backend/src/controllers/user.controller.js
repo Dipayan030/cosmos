@@ -15,9 +15,10 @@ export const signUp = async (req,res) => {
         if (records[0]) {
             return res.status(200).json({
                 isNewUser : false,
-                user : records
+                user : records[0]
             });
         };
+        const spaceId = generateId('SP');
         await usersModel.add({
             supabase_id: user.id,
             name: user.user_metadata?.name || user.user_metadata?.full_name,
@@ -25,7 +26,7 @@ export const signUp = async (req,res) => {
             created_at: user.created_at?user.confirmed_at.slice(0, 19).replace('T', ' ') : null,
             last_sign_in_at: user.last_sign_in_at?user.last_sign_in_at.slice(0, 19).replace('T', ' ') : null,
             role: 'user',
-            space_id: generateId('SP')
+            space_id: spaceId
         });
         const userFirstname = user?.user_metadata.full_name.slice(0 , user?.user_metadata.full_name.indexOf(' '));
         const htmlContent = await render(WelcomeEmail({ userFirstname: userFirstname}));
@@ -37,6 +38,14 @@ export const signUp = async (req,res) => {
                 name: user.user_metadata?.name || user.user_metadata.full_name,
             }
         );
+        return res.status(201).json({
+            isNewUser: true,
+            user: {
+                name: user.user_metadata?.name || user.user_metadata?.full_name,
+                email: user.email,
+                space_id: spaceId
+            }
+        });
 
     } catch (err) {
         console.error("Error syncing users to backend", err);
