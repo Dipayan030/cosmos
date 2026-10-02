@@ -7,6 +7,10 @@ import CancelationEmail from "../../dist/emails/CancelationEmail.js";
 import BeginingEmail from "../../dist/emails/BeginingEmail.js";
 import CompletionEmail from "../../dist/emails/CompletionEmail.js";
 import { sendEmail } from "../utils/brevo.js";
+import bwipjs from 'bwip-js';
+import { uploadToCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
+
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const getBookings = async(req,res) => {
     try{
@@ -82,6 +86,7 @@ export const cancelBooking = async(req,res) => {
 }
 
 export const toggleBookingsStatus = async(req,res) => {
+    let uploadedPublicId = null;
     try {
         const bookingId = req.params.id;
         const newStatus = req.body.status;
@@ -93,6 +98,28 @@ export const toggleBookingsStatus = async(req,res) => {
            status: newStatus,
            booking_id: bookingId
         });
+        let barcodePublicUrl = null;
+        if (newStatus == 'confirmed') {
+            try{ 
+                const barcodeBuffer = await bwipjs.toBuffer({
+                    bcid: 'code128',       // Barcode type
+                    text: booking[0]?.ticket_id,            // Text to encode
+                    scale: 3,              // Scaling factor (resolution)
+                    height: 10,            // Bar height, in millimeters
+                    includetext: true,     // Include human-readable text below barcode
+                    textxalign: 'center',  // Center-align the text
+                });
+                const base64ImageString = `data:image/png;base64,${barcodeBuffer.toString('base64')}`;
+                const uploadResult = await uploadToCloudinary(base64ImageString);
+                if (uploadResult) {
+                    uploadedPublicId = uploadResult?.public_id;
+                    barcodePublicUrl = uploadResult?.secure_url;
+                }
+                console.log(uploadResult)
+            } catch (err) {
+                console.error("error getting barcode", err)
+            }
+        }
         const stsEmails = {
             confirmed : {
                 htmlCont : ConfirmationEmail({
@@ -101,7 +128,8 @@ export const toggleBookingsStatus = async(req,res) => {
                     fullName : booking[0]?.name, 
                     bookingId : booking[0]?.booking_id, 
                     departureStation : booking[0]?.departure_station, 
-                    date : booking[0]?.created_at? new Date(booking[0].created_at).toLocaleDateString() : ''
+                    date : booking[0]?.created_at? new Date(booking[0].created_at).toLocaleDateString() : '',
+                    barCodeLink : barcodePublicUrl
                 }),
                 subject: 'Booking Confirmed'
             },
@@ -143,6 +171,16 @@ export const toggleBookingsStatus = async(req,res) => {
         });
     } catch(err) {
         console.error("Error editing booking status in db:", err);
+    } finally {
+        if (uploadedPublicId) {
+            await delay(60000);
+            try {
+                await deleteFromCloudinary(uploadedPublicId);
+                console.log(`Successfully deleted temporary asset from Cloudinary: ${uploadedPublicId}`);
+            } catch (deleteError) {
+                console.error('Failed to delete temporary barcode from Cloudinary:', deleteError.message);
+            }
+        }
     }
 };
 
