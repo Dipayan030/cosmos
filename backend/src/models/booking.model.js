@@ -3,7 +3,16 @@ import { db } from "../db/index.js";
 export const bookingModel = {
     async findAll() {
         const query = `
-            SELECT * FROM booking;
+            SELECT
+                booking_id,
+                user_id,
+                BIN_TO_UUID(planet_id) AS planet_id,
+                status,
+                space_id,
+                ticket_id,
+                departure_station,
+                created_at
+            FROM booking;
         `;
         const [rows] = await db.query(query);
         return rows;

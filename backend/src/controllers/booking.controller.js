@@ -84,12 +84,13 @@ export const cancelBooking = async(req,res) => {
 export const toggleBookingsStatus = async(req,res) => {
     try {
         const bookingId = req.params.id;
+        const newStatus = req.body.status;
         const booking = await bookingModel.findById(bookingId);
         if(!booking || !booking[0]){
             res.status(404).json({ message: "Booking not found" });
         };
         await bookingModel.toggleStatus({
-           status: req.body.status,
+           status: newStatus,
            booking_id: bookingId
         });
         const stsEmails = {
@@ -100,7 +101,7 @@ export const toggleBookingsStatus = async(req,res) => {
                     fullName : booking[0]?.name, 
                     bookingId : booking[0]?.booking_id, 
                     departureStation : booking[0]?.departure_station, 
-                    date : booking[0]?.created_at
+                    date : booking[0]?.created_at? new Date(booking[0].created_at).toLocaleDateString() : ''
                 }),
                 subject: 'Booking Confirmed'
             },
@@ -128,10 +129,10 @@ export const toggleBookingsStatus = async(req,res) => {
                 subject: 'Journey Completed'
             }
         };
-        const htmlContent = await render(stsEmails.req.body.status.htmlCont);
+        const htmlContent = await render(stsEmails[newStatus].htmlCont);
         await sendEmail(
             htmlContent,
-            stsEmails.req.body.status.subject,
+            stsEmails[newStatus].subject,
             {
                 email: booking[0].email,
                 name: booking[0].name
