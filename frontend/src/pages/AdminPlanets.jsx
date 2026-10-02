@@ -82,7 +82,7 @@ function AdminPlanets() {
     }
     const dltPlanet = async (id) => {
         await deletePlanet({
-            requestUrl: `/api/v1/admin/plantes/delete/${id}`,
+            requestUrl: `/api/v1/admin/planets/delete/${id}`,
         });
         await reloadPlanets();
     }

@@ -97,7 +97,7 @@ export const bookingModel = {
                 b.created_at,
                 u.name AS user_name,
                 u.email,
-                p.name planet_name
+                p.name AS planet_name
             FROM booking b
             JOIN users u ON b.user_id = u.user_id
             JOIN planets p ON b.planet_id = p.planet_id
