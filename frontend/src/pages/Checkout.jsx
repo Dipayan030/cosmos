@@ -113,8 +113,12 @@ function Checkout() {
                     <span className="gap-2 flex flex-col text-sm lg:text-base">
                         <p>Next launch window: 48 hours</p>
                     </span>
-                    {submissionMessage && <p role="status" className="text-sm text-white/75">{submissionMessage}</p>}
-                    <button type="submit" disabled={isSubmitting} className="lg:h-16 h-14 w-full bg-white text-black text-base lg:text-lg rounded-md disabled:opacity-60">{isSubmitting ? 'RESERVING...' : 'CHECKOUT'}</button>
+                    {submissionMessage ? 
+                        <button type="submit" disabled="true" className="lg:h-16 h-14 w-full bg-white text-black text-base lg:text-lg rounded-md disabled:opacity-60">Submited</button>
+                    :
+                        <button type="submit" disabled={isSubmitting} className="lg:h-16 h-14 w-full bg-white text-black text-base lg:text-lg rounded-md disabled:opacity-60">{isSubmitting ? 'RESERVING...' : 'CHECKOUT'}</button>
+                    }
+                    
                 </form>
             </div>
         </div>
