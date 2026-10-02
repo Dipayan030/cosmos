@@ -124,11 +124,13 @@ export const deletePlanets = async(req,res) => {
         const response = await deleteFromCloudinary(planet[0].cloudinaryID);
         if (response == null){
             console.log("Cloudinary deletion failed");
-            return null;
+            return res.status(502).json({ success: false, message: "Failed to delete planet image" });
         }
         await planetModel.delete(planetId);
+        return res.status(200).json({ success: true, message: "Planet deleted successfully" });
     } catch(err) {
         console.error("Error deleting plaenet form db", err)
+        return res.status(500).json({ success: false, message: "Error deleting planet" });
     }
 };
 
