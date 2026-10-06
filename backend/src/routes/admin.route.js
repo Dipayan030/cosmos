@@ -24,6 +24,7 @@ router.route("/planets/export").get(csvExportPlanets)
 
 router.route("/bookings/show").get(getBookings)
 router.route("/bookings/statusToggle/:id").post(toggleBookingsStatus)
+router.route("/bookings/show/:id").get()
 router.route("/bookings/export").post(csvExportBookings)
 
 export default router

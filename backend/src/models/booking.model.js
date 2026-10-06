@@ -106,4 +106,24 @@ export const bookingModel = {
         const [rows] = await db.query(query,[userId]);
         return rows;
     },
+
+    async findByTicketId(ticketId) {
+        const query = `
+            SELECT  
+                b.status,
+                b.space_id,
+                b.ticket_id,
+                b.departure_station,
+                b.created_at,
+                u.name AS user_name,
+                u.email,
+                p.name AS planet_name
+            FROM booking b
+            JOIN users u ON b.user_id = u.user_id
+            JOIN planets p ON b.planet_id = p.planet_id
+            WHERE b.ticket_id=?;
+        `;
+        const [rows] = await db.query(query,[ticketId]);
+        return rows;
+    },
 }
