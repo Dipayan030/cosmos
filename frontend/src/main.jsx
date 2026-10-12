@@ -19,7 +19,9 @@ import { AdminAuthProvider } from './contexts/AdminAuthContext.jsx'
 import AdminUsers from './pages/AdminUsers.jsx'
 import AdminPlanets from './pages/AdminPlanets.jsx'
 import AdminBookings from './pages/AdminBookings.jsx'
-
+import ScannerLayout from './layouts/ScannerLayout.jsx'
+import BookingScanner from './pages/BookingScanner.jsx'
+import BookingDetails from './pages/BookingDetails.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -45,6 +47,13 @@ const router = createBrowserRouter(
           <Route path='bookings' element={<AdminBookings />} />
           <Route path='flights' element={<AdminDashboard />} />
           <Route path='marketing' element={<AdminDashboard />} />
+        </Route>
+      </Route>
+      <Route path='/admin/' element={<ScannerLayout/>}>
+        <Route path='auth/context' element={<AdminAuthProvider />} />
+        <Route element={<AdminRoute />}>
+          <Route path='scanner' element={<BookingScanner/>}/>
+          <Route path='booking/:barcode' element={<BookingDetails/>}/>
         </Route>
       </Route>
     </Route>
