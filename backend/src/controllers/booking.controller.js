@@ -58,7 +58,7 @@ export const showBookings = async(req,res) => {
             return res.status(401).json({ error: "Not a valid user" });
         };
         const bookings = await bookingModel.findByUserId(user.id);
-        res.status(200).json({
+        return res.status(200).json({
             data: bookings
         });
     } catch(err) {
@@ -82,6 +82,24 @@ export const cancelBooking = async(req,res) => {
         });
     } catch(err) {
         console.error("Error cancling booking:", err);
+    }
+};
+
+export const getBookingByTicketId = async(req,res) => {
+    try {
+        const ticketId = req.params.id;
+        if(!ticketId){
+            res.status(404).json({ message: "TicketId not found" });
+        }
+        const booking = await bookingModel.findByTicketId(ticketId);
+        if(!booking||!booking[0]){
+            res.status(404).json({ message: "Booking not found" });
+        };
+        return res.status(200).json({
+            data: booking
+        });
+    } catch(err) {
+        console.error("Error fetching data for perticular booking:", err);
     }
 }
 
