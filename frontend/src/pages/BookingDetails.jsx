@@ -1,34 +1,61 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
-import { useOutletContext, useParams } from "react-router-dom";
-
-const stsColorPalette = {
-  pending: {
-    txt: 'text-amber-300',
-    bg: 'bg-amber-900/60'
-  },
-  confirmed: {
-    txt: 'text-green-300',
-    bg: 'bg-green-900/60'
-  },
-  started: {
-    txt: 'text-blue-300',
-    bg: 'bg-blue-900/60'
-  },
-  completed: {
-    txt: 'text-cyan-300',
-    bg: 'bg-cyan-900/60'
-  },
-  cancelled: {
-    txt: 'text-rose-300',
-    bg: 'bg-rose-900/60'
-  },
-};
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
 function BookingDetails() {
     const { barcode } = useParams();
     const { userSession } = useOutletContext();
     const normalizedBarcode = barcode ? decodeURIComponent(barcode) : '';
+    const [ loading, setLoading ] = useState(false);
+    const navigate = useNavigate();
+    
+    const stsColorPalette = {
+        pending: {
+            txt: 'text-amber-300',
+            bg: 'bg-amber-900/60'
+        },
+        confirmed: {
+            txt: 'text-green-300',
+            bg: 'bg-green-900/60'
+        },
+        started: {
+            txt: 'text-blue-300',
+            bg: 'bg-blue-900/60'
+        },
+        completed: {
+            txt: 'text-cyan-300',
+            bg: 'bg-cyan-900/60'
+        },
+        cancelled: {
+            txt: 'text-rose-300',
+            bg: 'bg-rose-900/60'
+        },
+    };
+    const nextSts = {
+        pending : 'confirmed',
+        confirmed : 'started',
+        started : 'completed',
+    };
+    
+    const { execute: toggleStatusBooking } = useFetch('/api/v1/admin/bookings/statusToggle', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${userSession.access_token}`,
+            'Content-Type': 'application/json',
+        }
+    }, { immediate: false });
+
+    const toggleSts = async (id,sts) => {
+        setLoading(true);
+        await toggleStatusBooking({
+            requestUrl: `/api/v1/admin/bookings/statusToggle/${id}`,
+            body: JSON.stringify({ status: sts })
+        });
+        reloadBooking();
+        setLoading(false);
+        navigate('/admin/scanner');
+    };
+
     const { data = [], execute: reloadBooking } = useFetch(
         normalizedBarcode ? `/api/v1/admin/bookings/show/${encodeURIComponent(normalizedBarcode)}` : '/api/v1/admin/bookings/show',
         {
@@ -47,6 +74,8 @@ function BookingDetails() {
     }, [normalizedBarcode, reloadBooking]);
 
     const booking = Array.isArray(data) ? data[0] ?? {} : data ?? {};
+    const currSts = booking?.status;
+    const nextStatus = nextSts[currSts];
 
     if (!normalizedBarcode) {
         return (
@@ -73,12 +102,12 @@ function BookingDetails() {
                     <p>Ticket ID : {booking.ticket_id}</p>
                     <p className="md:col-span-2">Departure Station: {booking.departure_station}</p>
                 </span>
-                {booking.status === 'cancelled' ?
-                    <button disabled className="px-6 py-2 bg-rose-900/60 text-rose-400 mt-8">Cancelled</button>
-                :
-                    <button className="px-6 py-2 bg-rose-900/60 text-rose-400 mt-8">Cancel</button>
-                }
             </div>
+            {nextStatus && (
+                <button disabled={loading} className={`${loading? 'text-black/50' : 'text-black'} px-6 py-2 bg-white  mt-8`} onClick={() => toggleSts(booking?.booking_id, nextStatus)}>
+                    {nextStatus=='completed' ? nextStatus.slice(0, -1) :nextStatus.slice(0, -2)}
+                </button>
+            )}
         </div>
     );
 }
