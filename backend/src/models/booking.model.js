@@ -109,7 +109,8 @@ export const bookingModel = {
 
     async findByTicketId(ticketId) {
         const query = `
-            SELECT  
+            SELECT 
+                b.booking_id,
                 b.status,
                 b.space_id,
                 b.ticket_id,
